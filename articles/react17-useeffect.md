@@ -1,5 +1,5 @@
 ---
-title: "React17から学ぶuseEffectのお作法"
+title: "React17におけるuseEffectの破壊的変更を理解する"
 emoji: "🚰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["react", "javascript"]
