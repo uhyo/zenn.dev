@@ -238,6 +238,16 @@ BabelやTypeScriptを使っている場合は、これまでと異なるポイ�
 
 新方式で変換するには、developmentビルドの場合`"jsx": "react-jsxdev"`とし、productionビルドの場合は`"jsx": "react-jsx"`とします。両者を使い分けるために、`tsc`を素で使っている場合は`tsconfig.json`を2つ用意したり、`ts-loader`の場合は`compilerOptions`で`"jsx"`の値を場合によって指定したりしましょう。
 
+`"jsx"`コンパイラオプションに設定可能な値を、従来からあるものも含めてまとめると次のようになります。今回加わるのは最後の2つですね。
+
+| 値 | `<div />`の結果 | 説明 |
+| -- | -- | -- |
+| `preverse` | `<div />` | 変換しない。他のツールでJSXを変換するとき向け |
+| `react-native` | `<div />` | 変換しないが、拡張子を`.jsx`ではなく`.js`で出力する |
+| `react` | `React.createElement("div", ...)` | 旧変換 |
+| `react-jsx` | `jsx("div", ...)` | 新変換（productionビルド用） |
+| `react-jsxdev` | `jsxDEV("div", ...)` | 新変換（developmentビルド用） |
+
 また、前述の通りJSX記法を使用するためだけに`import React from "react"`を書いていた場合は必要なくなります。消しましょう。Reactチームは、丁寧にも必要なくなったインポートを自分で消すツールを提供してくれています。詳しくは公式ブログをみていただきたいですが、以下のコマンドで実行することができます。
 
 ```sh
