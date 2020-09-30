@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "zenn-cli": "^0.1.34"
+    "zenn-cli": "^0.1.40"
   }
 }
