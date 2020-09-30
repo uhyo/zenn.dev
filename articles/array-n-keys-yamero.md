@@ -179,7 +179,7 @@ console.log([...range(0, 5)]); // [0, 1, 2, 3, 4]
  * Returns an iterator that iterates integers in [start, end).
  */
 function* range(start, end) {
-  for (let i = 0; i < end; i++) {
+  for (let i = start; i < end; i++) {
     yield i;
   }
 }
