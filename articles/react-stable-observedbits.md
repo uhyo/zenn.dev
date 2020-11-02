@@ -68,7 +68,7 @@ Bitsという名前から推測できるように、changedBitsはビットパ�
 
 そして、そのチャンネルは32個あります。なぜなら、JavaScriptのビット演算は32ビットまでサポートしているからです。
 
-ここでチャンネルと呼んでいるものは、上からデータを流すことができて下ではそれを受け取ることができる（コンポーネントが再レンダリングされる）というものです。これはよく考えると、通常の（observedBitsを使わない）Contextの機能そのものですね。ということで、**observedBitsの使用は普通のContextを32個使用するのと本質的に同じことです。**
+ここでチャンネルと呼んでいるものは、上からデータを流すことができて下ではそれを受け取ることができる（コンポーネントが再レンダリングされる）というものです。これはよく考えると、通常の（observedBitsを使わない）Contextの機能そのものですね。ということで、**observedBitsの使用は普通のContextを32個使用するのと本質的に同じことです**（もちろん、人が手で書けば余計なContextを書かなくていいので本当に32個使うことは滅多にないでしょうが）。
 
 ということで、32個のContextを使ってobservedBitsを再現してみました。できたものがこちらです。
 
@@ -76,7 +76,7 @@ https://codesandbox.io/s/stable-observedbits-dyx92?file=/src/Ours.tsx
 
 @[codesandbox](https://codesandbox.io/embed/stable-observedbits-dyx92?fontsize=14&hidenavigation=1&theme=dark)
 
-このアプリの中ではReactから提供されているunstable_observedBitsと今回実装したものの両方で同じものが実装されており、どちらも同じように動作することが確かめられます。今回実装したものは`createBitsContext`でコンテキストを作るようになっています。
+このアプリの中ではReactから提供されているunstable_observedBitsと今回実装したものの両方を使って同じサンプルが実装されており、どちらのサンプルも同じように動作することが確かめられます。今回実装したものは`createBitsContext`でコンテキストを作るようになっています。
 
 実装の中身を覗いてみましょう。もちろんハイライトは[ここ](https://codesandbox.io/s/stable-observedbits-dyx92?file=/src/BitsContext/BitsContext.tsx:2462-2475)です。
 
@@ -186,7 +186,9 @@ return (
 
 [^loop]: ループでこれを書けることは知っています。インパクト重視の記事なので、ループ使えよというつっこみはご容赦ください。
 
-大まかな実装としては、大元のProviderに提供されたデータが変わったときにchangedBitsを計算し、それに応じて32個のProviderのうちどれのデータを更新するか決める感じになっています。Consumerの側も、32個のContextのうちobservedBitsが立っているもののみをsubscribeする実装になっています。やや実装がごちゃごちゃしていますが、本質的にやっていることはこれだけです。
+大まかな実装としては、大元のProviderに提供されたデータが変わったときにchangedBitsを計算し、それに応じて32個のProviderのうちどれのデータを更新するか決める感じになっています。Consumerの側も、32個のContextのうちobservedBitsが立っているもののみをsubscribeする実装になっています。受け取る側は、複数のコンテキストから受け取ったデータの中から最も新しいものを取り出して採用します。このために、32個のContextではデータ本体の他にデータの`generation`（新しいデータほど大きくなる数値）を配信しています。
+
+やや実装がごちゃごちゃしていますが、本質的にやっていることはこれだけです。
 
 ## おまけ: React 18（仮）でもobservedBitsを使いたい！
 
