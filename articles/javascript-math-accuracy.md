@@ -3,7 +3,7 @@ title: "JavaScriptの数値計算はどれくらい正確なのか"
 emoji: "🧮"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["javascript", "ecmascript"]
-published: false
+published: true
 ---
 
 JavaScriptは様々な用途で使われるプログラミング言語で、色々な用途に対応するための一通りの機能が揃っています。その中には、**数値計算**の機能も含まれています。
