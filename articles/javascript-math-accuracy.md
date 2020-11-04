@@ -56,7 +56,7 @@ implementation-approximatedについては次のように定義されていま�
 
 ## `Math`系の演算
 
-JavaScriptでは、`Math`オブジェクトを通して様々な数学的な演算機能が標準で提供されています。これらの制度がどうなっているのか見てみましょう。
+JavaScriptでは、`Math`オブジェクトを通して様々な数学的な演算機能が標準で提供されています。これらの精度がどうなっているのか見てみましょう。
 
 ### `Math.abs`
 
@@ -192,13 +192,13 @@ JavaScriptでは、`Math`オブジェクトを通して様々な数学的な演�
 
 fsub・fmulといった具体的な四則演算命令の定義には、結果について“rounded to the nearest representable value.”とあり、JavaScritptの場合と同じ保証がされていることが分かります。
 
-WebAssemblyに組み込まれている一番難しい計算はおそらく[fsqrt](https://webassembly.github.io/spec/core/exec/numerics.html#op-fsqrt)ですが、これについては“return the square root of 𝑧.”とだけ書かれており、制度について書かれていません（implementation-approximatedとは異なり、制度の保証をしないと書かれているわけでもありません）。
+WebAssemblyに組み込まれている一番難しい計算はおそらく[fsqrt](https://webassembly.github.io/spec/core/exec/numerics.html#op-fsqrt)ですが、これについては“return the square root of 𝑧.”とだけ書かれており、精度について書かれていません（implementation-approximatedとは異なり、精度の保証をしないと書かれているわけでもありません）。
 
 IEEE 754仕様は読んでいないので二次情報からの推測ですが（正確な情報をお持ちの方はぜひ教えてください！）平方根はIEEE 754における基本演算に含まれていることから、WebAssemblyにおける平方根は最大限の正確性を持つことが期待されます。正確な平方根が欲しい場合はJavaScriptではなくWebAssemblyで計算すべきかもしれません。
 
 ## まとめ
 
-この記事ではJavaScriptにおける数値計算における正確性について言語仕様を基に開設しました。JavaScriptでは、四則演算よりも複雑な演算はほぼ全てimplementation-approximatedとなっており、制度の保証がありません。我々は`Math.sin`が常に0.5を返すかもしれない世界でプログラミングをしているのです。
+この記事ではJavaScriptにおける数値計算における正確性について言語仕様を基に開設しました。JavaScriptでは、四則演算よりも複雑な演算はほぼ全てimplementation-approximatedとなっており、精度の保証がありません。我々は`Math.sin`が常に0.5を返すかもしれない世界でプログラミングをしているのです。
 
 - **Q.** 仕様は分かったけど実際の処理系ではどうなの？
 - **A.** 筆者はあまり興味がないので、読者の演習問題とします。
