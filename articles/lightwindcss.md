@@ -1,6 +1,6 @@
 ---
 title: "Tailwind CSSからクラス名覚えにくさを消したらどうなる？　こうなった"
-emoji: "🌬"
+emoji: "🌀"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["css", "react"]
 published: true
