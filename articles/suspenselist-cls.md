@@ -56,12 +56,12 @@ const DataList: React.VFC<{
           .map((data, index) => {
             return (
               <Suspense fallback={null} key={index}>
-                <OneData data={data} />
+                <OneData data={data} num={index + 1} />
               </Suspense>
             );
           })
           .concat([
-            <Suspense fallback={null}>
+            <Suspense fallback={null} key={-1}>
               <Footer />
             </Suspense>,
           ])}
@@ -72,12 +72,12 @@ const DataList: React.VFC<{
       .map((data, index) => {
         return (
           <Suspense fallback={null} key={index}>
-            <OneData data={data} />
+            <OneData data={data} num={index + 1} />
           </Suspense>
         );
       })
       .concat([
-        <Suspense fallback={null}>
+        <Suspense fallback={null} key={-1}>
           <Footer />
         </Suspense>,
       ]);
