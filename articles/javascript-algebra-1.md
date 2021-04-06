@@ -3,7 +3,7 @@ title: "JavaScript代数学 (1)"
 emoji: "⛳"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["javascript", "algebra"]
-published: false
+published: true
 ---
 
 2021 年初めに公開された以下の記事では、**クライアント・サーバー同型写像** (client-server isomorphism) という概念が提唱されました。しかしながら、この記事ではこの用語について少し触れられただけで、クライアント・サーバー同型写像という学問領域はまだ霧に包まれています。そこで、 **JavaScript 代数学**シリーズでは、最終的にクライアント・サーバー同型写像を理解することを目標として学習を進めていきます。
