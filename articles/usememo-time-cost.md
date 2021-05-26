@@ -18,7 +18,7 @@ React では、`useMemo`や`React.memo`などが最適化の手段として知�
 
 @[codesandbox](https://codesandbox.io/embed/goofy-mahavira-xwdn9?fontsize=14&hidenavigation=1&theme=dark)
 
-結果には当然ばらつきがありますが、筆者の環境では次のような結果が典型的なものとして現れました。
+結果には当然ばらつきがありますが、筆者の環境では次のような結果が典型的なものとして現れました（Mac 上の Google Chrome・Firefox・Safari で同じような傾向）。
 
 | baseline  | useMemo   | div       |
 | --------- | --------- | --------- |
