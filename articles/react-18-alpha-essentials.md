@@ -160,13 +160,13 @@ React 18 では`StrictMode`に新たな挙動が追加されます。言い方�
 
 > The main motivation for the new Offscreen API (and the effects changes described in this post) is to allow React to preserve state like this by hiding components instead of unmounting them. To do this React will call the same lifecycle hooks as it does when unmounting– but it will also preserve the state of both React components and DOM elements.
 >
-> [Adding Strict Effects to StrictMode](https://github.com/reactwg/react-18/discussions/5)から引用
+> [Adding Strict Effects to StrictMode](https://github.com/reactwg/react-18/discussions/19)から引用
 
 簡単に言えば、これは React コンポーネントに従来あった mount/unmount というライフサイクルに加えて「hidden」という新たな状態を与えるもので、具体的には「レンダリングされた DOM は残っているが画面に表示されていない状態」のコンポーネントを作ることができるようになります[^note_dom]。このとき`useEffect`のサイクルは「mount で発火 →unmount でクリーンアップ」という従来のものから「**表示された**ら発火 →**非表示になった**らクリーンアップ」と再定義されます。コンポーネントは unmount されずに非表示 → 表示と行き来する可能性があるため、たとえ`useEffect(() => { /* ... */ }, [])`だったとしてもひとつのコンポーネントで複数回エフェクトが発火する可能性が生じるのです。この挙動に耐えられるかあらかじめ確かめるために`StrictMode`の新しい挙動が活用できます。このように`useEffect`を再定義する理由は次のように説明されています。React の Effect 観が現れていますね。
 
 > It wouldn’t make sense for an unmounted component to trigger some imperative code (e.g. to position a tooltip). The same is true for a component that’s been hidden. So React needs to tell the component that it is being hidden. How? By calling the same functions that it calls when the component is unmounted (either an effect cleanup functions or `componentWillUnmount`).
 >
-> [Adding Strict Effects to StrictMode](https://github.com/reactwg/react-18/discussions/5)から引用
+> [Adding Strict Effects to StrictMode](https://github.com/reactwg/react-18/discussions/19)から引用
 
 [^note_dom]: DOM が残るというのが実際に文書ツリー内に残るのかメモリ上にだけあるのかは情報が無くよく分かりませんでした。まだ未定かもしれません。
 
