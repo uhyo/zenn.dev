@@ -8,7 +8,7 @@ published: false
 
 今日リリースされた TypeScript 4.5 Beta の新機能として、**標準ライブラリの差し替えが従来よりも簡単になる**というものがあります。
 
-筆者は TypeScript の標準ライブラリから`any`を排除してより安全にした[better-typescript-lib](https://github.com/uhyo/better-typescript-lib)を開発していましたが、このたび TypeScript 4.5 に対応した v2.0.0 のアルファ版を用意しました（`2.0.0-alpha.0`）。
+筆者は TypeScript の標準ライブラリから`any`を排除してより安全にした[better-typescript-lib](https://github.com/uhyo/better-typescript-lib)を開発していましたが、このたび TypeScript 4.5 に対応した v2.0.0 のアルファ版を用意しました（`2.0.0-alpha.1`）。
 
 この記事では better-typescript-lib の簡単な紹介に加えて、TypeScript 4.5 の機能の解説やそれによって better-typescript-lib に起こった変化を紹介します。
 
@@ -60,7 +60,7 @@ https://qiita.com/uhyo/items/18458646e8aae25207db
 
 ## 新しい better-typescript-lib 導入方法とその仕組み
 
-TypeScript 4.5 以上対応の better-typescript-lib v2 では、better-typescript-lib の導入は**npm install するだけ**になります。つまり、次を実行するだけであり、手動での読み込みはおろか、tsconfig.json の書き換えすら不要です。非常に簡単ですね。
+TypeScript 4.5 以上対応の better-typescript-lib v2 では、better-typescript-lib の導入は **npm install するだけ**になります。つまり、次を実行するだけであり、手動での読み込みはおろか、tsconfig.json の書き換えすら不要です。非常に簡単ですね。
 
 ```
 npm i -D better-typescript-lib
@@ -70,39 +70,39 @@ npm i -D better-typescript-lib
 
 https://github.com/microsoft/TypeScript/pull/45771
 
-これは、`@typescript/[lib]`という名前のパッケージがインストールされている場合、それを標準ライブラリの`lib.[lib].d.ts`の代わりに読み込むというものです。例えば tsconfig.json に`"target": "es2015"`と書かれている場合は TypeScript に付属の`lib.es2015.d.ts`が読み込まれるというのがこれまでの挙動ですが、もし`@typescript/es2015`がインストールされている場合、こちらが代わりに読み込まれます。
+これは、`@typescript/lib-[lib]`という名前のパッケージがインストールされている場合、それを標準ライブラリの`lib.[lib].d.ts`の代わりに読み込むというものです。例えば tsconfig.json に`"target": "es2015"`と書かれている場合は TypeScript に付属の`lib.es2015.d.ts`が読み込まれるというのがこれまでの挙動ですが、もし`@typescript/lib-es2015`がインストールされている場合、こちらが代わりに読み込まれます。
 
-これにより、改善された型定義を`@typescript/es2015`のような名前でインストールしてやることで、TypeScript が読み込む型定義を差し替えることができます。
+これにより、改善された型定義を`@typescript/lib-es2015`のような名前でインストールしてやることで、TypeScript が読み込む型定義を差し替えることができます。
 
-なお、npm で`@typescript/`というスコープを所持しているのはもちろん TypeScript チームです。第三者が勝手にこれらのパッケージ名を publish することはできません。しかし幸いにも、npm（あるいは package.json をサポートする他のパッケージマネージャも）はパッケージを別名でインストールする機能をサポートしています。`better-typescript-lib`の`package.json`は次のような内容になっています。
+なお、npm で`@typescript`というスコープを所持しているのはもちろん TypeScript チームです。第三者が勝手にこれらのパッケージ名を publish することはできません。しかし幸いにも、npm（あるいは package.json をサポートする他のパッケージマネージャも）はパッケージを別名でインストールする機能をサポートしています。`better-typescript-lib`の`package.json`は次のような内容になっています。
 
 ```json
   "dependencies": {
-    "@typescript/dom": "npm:@better-typescript-lib/dom@2.0.0-alpha.0",
-    "@typescript/es2015": "npm:@better-typescript-lib/es2015@2.0.0-alpha.0",
-    "@typescript/es2016": "npm:@better-typescript-lib/es2016@2.0.0-alpha.0",
-    "@typescript/es2017": "npm:@better-typescript-lib/es2017@2.0.0-alpha.0",
-    "@typescript/es2018": "npm:@better-typescript-lib/es2018@2.0.0-alpha.0",
-    "@typescript/es2019": "npm:@better-typescript-lib/es2019@2.0.0-alpha.0",
-    "@typescript/es2020": "npm:@better-typescript-lib/es2020@2.0.0-alpha.0",
-    "@typescript/es2021": "npm:@better-typescript-lib/es2021@2.0.0-alpha.0",
-    "@typescript/es5": "npm:@better-typescript-lib/es5@2.0.0-alpha.0",
-    "@typescript/esnext": "npm:@better-typescript-lib/esnext@2.0.0-alpha.0",
-    "@typescript/header": "npm:@better-typescript-lib/header@2.0.0-alpha.0",
-    "@typescript/scripthost": "npm:@better-typescript-lib/scripthost@2.0.0-alpha.0",
-    "@typescript/webworker": "npm:@better-typescript-lib/webworker@2.0.0-alpha.0"
+    "@typescript/lib-dom": "npm:@better-typescript-lib/dom@2.0.0-alpha.1",
+    "@typescript/lib-es2015": "npm:@better-typescript-lib/es2015@2.0.0-alpha.1",
+    "@typescript/lib-es2016": "npm:@better-typescript-lib/es2016@2.0.0-alpha.1",
+    "@typescript/lib-es2017": "npm:@better-typescript-lib/es2017@2.0.0-alpha.1",
+    "@typescript/lib-es2018": "npm:@better-typescript-lib/es2018@2.0.0-alpha.1",
+    "@typescript/lib-es2019": "npm:@better-typescript-lib/es2019@2.0.0-alpha.1",
+    "@typescript/lib-es2020": "npm:@better-typescript-lib/es2020@2.0.0-alpha.1",
+    "@typescript/lib-es2021": "npm:@better-typescript-lib/es2021@2.0.0-alpha.1",
+    "@typescript/lib-es5": "npm:@better-typescript-lib/es5@2.0.0-alpha.1",
+    "@typescript/lib-esnext": "npm:@better-typescript-lib/esnext@2.0.0-alpha.1",
+    "@typescript/lib-header": "npm:@better-typescript-lib/header@2.0.0-alpha.1",
+    "@typescript/lib-scripthost": "npm:@better-typescript-lib/scripthost@2.0.0-alpha.1",
+    "@typescript/lib-webworker": "npm:@better-typescript-lib/webworker@2.0.0-alpha.1"
   }
 ```
 
-これは例えば、`@typescript/dom`という名前で`@better-typescript-lib/dom@2.0.0-alpha.0`をインストールするというような意味です。こうすることで、好きなパッケージを`@typescript/[lib]`という名前でインストールすることができます。これを利用して、我々が用意した型定義を TypeScript に読み込ませることができます（これもややハックな気がしますが、TypeScript が公式に推奨している方法です）。
+これは例えば、`@typescript/lib-dom`という名前で`@better-typescript-lib/dom@2.0.0-alpha.1`をインストールするというような意味です。こうすることで、好きなパッケージを`@typescript/lib-[lib]`という名前でインストールすることができます。これを利用して、我々が用意した型定義を TypeScript に読み込ませることができます（これもややハックな気がしますが、TypeScript が公式に推奨している方法です）。
 
-`better-typescript-lib`をインストールするだけでこれらの`@typescript/[lib]`が TypeScript コンパイラから見えるようになるのは、node_modules の中身がフラット化される仕様を使用しているからです。PnP などの場合はうまくいかないかもしれませんが、要望次第で今後の対応が検討されるかもしれません。
+`better-typescript-lib`をインストールするだけでこれらの`@typescript/lib-[lib]`が TypeScript コンパイラから見えるようになるのは、node_modules の中身がフラット化される仕様を使用しているからです。PnP などの場合はうまくいかないかもしれませんが、要望次第で今後の対応が検討されるかもしれません。
 
 ちなみに、TypeScript にこのような機能が導入されたのは、もともとは`@types/web`の構想のためと思われます（次の issue を参照）。
 
 https://github.com/microsoft/TypeScript/issues/44795
 
-TypeScript の標準ライブラリは TypeScript のバージョンアップに合わせて変化しますが、その中でも`lib.dom.d.ts`の変更は後方互換性が壊れる原因になりがちでした。`@types/web`を`@typescript/dom`としてインストールしておくことで、独立したバージョン管理を可能として TypeScript のバージョンアップの影響を受けないようにすることができます。これを実現するための方式はいろいろありますが、現在の`@typescript/[lib]`を使う方式は、依存先のバージョン管理などを既存のパッケージマネージャに完全に任せることができるという利点のために選択されました。`better-typescript-lib`のインストールの簡単さもまさにこの恩恵を受けていますね。
+TypeScript の標準ライブラリは TypeScript のバージョンアップに合わせて変化しますが、その中でも`lib.dom.d.ts`の変更は後方互換性が壊れる原因になりがちでした。`@types/web`を`@typescript/dom`としてインストールしておくことで、独立したバージョン管理を可能として TypeScript のバージョンアップの影響を受けないようにすることができます。これを実現するための方式はいろいろありますが、現在の`@typescript/lib-[lib]`を使う方式は、依存先のバージョン管理などを既存のパッケージマネージャに完全に任せることができるという利点のために選択されました。`better-typescript-lib`のインストールの簡単さもまさにこの恩恵を受けていますね。
 
 ## まとめ
 
