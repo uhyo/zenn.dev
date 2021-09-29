@@ -12,9 +12,15 @@ published: false
 
 この記事では better-typescript-lib の簡単な紹介に加えて、TypeScript 4.5 の機能の解説やそれによって better-typescript-lib に起こった変化を紹介します。
 
+:::message
+英語版記事も用意しました。合わせてご覧ください。
+
+→ [TypeScript 4.5 Shortens Path to Safer Standard Library  - DEV Community 👩‍💻👨‍💻](https://dev.to/uhyo_/typescript-4-5-shortens-path-to-safer-standard-library-1n6l)
+:::
+
 ## better-typescript-lib について
 
-better-typescript-lib は、TypeScript の標準ライブラリをより型安全にしたものです。代表例として、標準の TypeScript では`JSON.parse`や`eval`といったものの返り値が`any`になります。
+better-typescript-lib は、TypeScript の標準ライブラリをより型安全にしたものです。better-typescript-libでより安全になる例として、`JSON.parse`や`eval`が挙げられます。標準の TypeScript ではこれらの返り値は`any`になります。
 
 ```ts
 // any 😩
@@ -63,8 +69,12 @@ https://qiita.com/uhyo/items/18458646e8aae25207db
 TypeScript 4.5 以上対応の better-typescript-lib v2 では、better-typescript-lib の導入は **npm install するだけ**になります。つまり、次を実行するだけであり、手動での読み込みはおろか、tsconfig.json の書き換えすら不要です。非常に簡単ですね。
 
 ```
-npm i -D better-typescript-lib
+npm i -D better-typescript-lib@2.0.0-alpha.1
 ```
+
+:::message
+TypeScript 4.5の正式版がリリースされたらそれに合わせてbetter-typescript-libもv2を正式リリースする予定です。その後は`@2.0.0-alpha.1`は不要です。最新情報は[GitHub](https://github.com/uhyo/better-typescript-lib)をご確認ください。
+:::
 
 これを可能にしているのが、TypeScript 4.5 で導入される次の機能です。
 
@@ -102,8 +112,10 @@ https://github.com/microsoft/TypeScript/pull/45771
 
 https://github.com/microsoft/TypeScript/issues/44795
 
-TypeScript の標準ライブラリは TypeScript のバージョンアップに合わせて変化しますが、その中でも`lib.dom.d.ts`の変更は後方互換性が壊れる原因になりがちでした。`@types/web`を`@typescript/dom`としてインストールしておくことで、独立したバージョン管理を可能として TypeScript のバージョンアップの影響を受けないようにすることができます。これを実現するための方式はいろいろありますが、現在の`@typescript/lib-[lib]`を使う方式は、依存先のバージョン管理などを既存のパッケージマネージャに完全に任せることができるという利点のために選択されました。`better-typescript-lib`のインストールの簡単さもまさにこの恩恵を受けていますね。
+TypeScript の標準ライブラリは TypeScript のバージョンアップに合わせて変化しますが、その中でも`lib.dom.d.ts`の変更は後方互換性が壊れる原因になりがちでした。`@types/web`を`@typescript/lib-dom`としてインストールしておくことで、独立したバージョン管理を可能として TypeScript のバージョンアップの影響を受けないようにすることができます。これを実現するための方式はいろいろありますが、現在の`@typescript/lib-[lib]`を使う方式は、依存先のバージョン管理などを既存のパッケージマネージャに完全に任せることができるという利点のために選択されました。`better-typescript-lib`のインストールの簡単さもまさにこの恩恵を受けていますね。
 
 ## まとめ
 
 TypeScript 4.5 では標準ライブラリの型定義を簡単に差し替えるための新たな機能が導入されました。デフォルトのものより型安全な標準ライブラリを提供する`better-typescript-lib`では、次期メジャーバージョンでさっそくこの機能を利用し、より簡単にインストールできるようになりました。
+
+- [better-typescript-libのGitHub](https://github.com/uhyo/better-typescript-lib) （v2の正式リリース前は`v2`ブランチを参照してください）
