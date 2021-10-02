@@ -24,7 +24,7 @@ better-typescript-lib は、TypeScript の標準ライブラリをより型安�
 
 ```ts
 // any 😩
-const obj = JSON.parse("{foo: 123}");
+const obj = JSON.parse('{"foo": 123}');
 
 console.log(obj.foo); // 123
 ```
@@ -33,7 +33,7 @@ better-typescript-lib を導入すると、`JSON.parse`の返り値は`JSONValue
 
 ```ts
 // JSONValue 😁
-const obj = JSON.parse("{foo: 123}");
+const obj = JSON.parse('{"foo": 123}');
 
 if (isFooObject(obj)) {
   console.log(obj.foo); // 123
