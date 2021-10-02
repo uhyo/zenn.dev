@@ -3,19 +3,19 @@ title: "TypeScript 4.5でますます便利に！ better-typescript-lib v2"
 emoji: "🤓"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["typescript"]
-published: false
+published: true
 ---
 
-今日リリースされた TypeScript 4.5 Beta の新機能として、**標準ライブラリの差し替えが従来よりも簡単になる**というものがあります。
+今日リリースされた [TypeScript 4.5 Beta](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/) の新機能として、**標準ライブラリの差し替えが従来よりも簡単になる**というものがあります。
 
-筆者は TypeScript の標準ライブラリから`any`を排除してより安全にした[better-typescript-lib](https://github.com/uhyo/better-typescript-lib)を開発していましたが、このたび TypeScript 4.5 に対応した v2.0.0 のアルファ版を用意しました（`2.0.0-alpha.1`）。
+筆者は TypeScript の標準ライブラリから`any`を排除してより安全にした[better-typescript-lib](https://github.com/uhyo/better-typescript-lib)を開発していましたが、このたび TypeScript 4.5 に対応した v2.0.0 のベータ版を用意しました（`2.0.0-beta`）。
 
 この記事では better-typescript-lib の簡単な紹介に加えて、TypeScript 4.5 の機能の解説やそれによって better-typescript-lib に起こった変化を紹介します。
 
 :::message
 英語版記事も用意しました。合わせてご覧ください。
 
-→ [TypeScript 4.5 Shortens Path to Safer Standard Library  - DEV Community 👩‍💻👨‍💻](https://dev.to/uhyo_/typescript-4-5-shortens-path-to-safer-standard-library-1n6l)
+→ [TypeScript 4.5 Shortens Path to Safer Standard Library  - DEV Community 👩‍💻👨‍💻](https://dev.to/uhyo_/typescript-4-5-shortens-path-to-safer-standard-library-256m)
 :::
 
 ## better-typescript-lib について
@@ -69,11 +69,11 @@ https://qiita.com/uhyo/items/18458646e8aae25207db
 TypeScript 4.5 以上対応の better-typescript-lib v2 では、better-typescript-lib の導入は **npm install するだけ**になります。つまり、次を実行するだけであり、手動での読み込みはおろか、tsconfig.json の書き換えすら不要です。非常に簡単ですね。
 
 ```
-npm i -D better-typescript-lib@2.0.0-alpha.1
+npm i -D better-typescript-lib@2.0.0-beta
 ```
 
 :::message
-TypeScript 4.5の正式版がリリースされたらそれに合わせてbetter-typescript-libもv2を正式リリースする予定です。その後は`@2.0.0-alpha.1`は不要です。最新情報は[GitHub](https://github.com/uhyo/better-typescript-lib)をご確認ください。
+TypeScript 4.5の正式版がリリースされたらそれに合わせてbetter-typescript-libもv2を正式リリースする予定です。その後は`@2.0.0-beta`は不要です。最新情報は[GitHub](https://github.com/uhyo/better-typescript-lib)をご確認ください。
 :::
 
 これを可能にしているのが、TypeScript 4.5 で導入される次の機能です。
@@ -88,23 +88,23 @@ https://github.com/microsoft/TypeScript/pull/45771
 
 ```json
   "dependencies": {
-    "@typescript/lib-dom": "npm:@better-typescript-lib/dom@2.0.0-alpha.1",
-    "@typescript/lib-es2015": "npm:@better-typescript-lib/es2015@2.0.0-alpha.1",
-    "@typescript/lib-es2016": "npm:@better-typescript-lib/es2016@2.0.0-alpha.1",
-    "@typescript/lib-es2017": "npm:@better-typescript-lib/es2017@2.0.0-alpha.1",
-    "@typescript/lib-es2018": "npm:@better-typescript-lib/es2018@2.0.0-alpha.1",
-    "@typescript/lib-es2019": "npm:@better-typescript-lib/es2019@2.0.0-alpha.1",
-    "@typescript/lib-es2020": "npm:@better-typescript-lib/es2020@2.0.0-alpha.1",
-    "@typescript/lib-es2021": "npm:@better-typescript-lib/es2021@2.0.0-alpha.1",
-    "@typescript/lib-es5": "npm:@better-typescript-lib/es5@2.0.0-alpha.1",
-    "@typescript/lib-esnext": "npm:@better-typescript-lib/esnext@2.0.0-alpha.1",
-    "@typescript/lib-header": "npm:@better-typescript-lib/header@2.0.0-alpha.1",
-    "@typescript/lib-scripthost": "npm:@better-typescript-lib/scripthost@2.0.0-alpha.1",
-    "@typescript/lib-webworker": "npm:@better-typescript-lib/webworker@2.0.0-alpha.1"
+    "@typescript/lib-dom": "npm:@better-typescript-lib/dom@2.0.0-beta",
+    "@typescript/lib-es2015": "npm:@better-typescript-lib/es2015@2.0.0-beta",
+    "@typescript/lib-es2016": "npm:@better-typescript-lib/es2016@2.0.0-beta",
+    "@typescript/lib-es2017": "npm:@better-typescript-lib/es2017@2.0.0-beta",
+    "@typescript/lib-es2018": "npm:@better-typescript-lib/es2018@2.0.0-beta",
+    "@typescript/lib-es2019": "npm:@better-typescript-lib/es2019@2.0.0-beta",
+    "@typescript/lib-es2020": "npm:@better-typescript-lib/es2020@2.0.0-beta",
+    "@typescript/lib-es2021": "npm:@better-typescript-lib/es2021@2.0.0-beta",
+    "@typescript/lib-es5": "npm:@better-typescript-lib/es5@2.0.0-beta",
+    "@typescript/lib-esnext": "npm:@better-typescript-lib/esnext@2.0.0-beta",
+    "@typescript/lib-header": "npm:@better-typescript-lib/header@2.0.0-beta",
+    "@typescript/lib-scripthost": "npm:@better-typescript-lib/scripthost@2.0.0-beta",
+    "@typescript/lib-webworker": "npm:@better-typescript-lib/webworker@2.0.0-beta"
   }
 ```
 
-これは例えば、`@typescript/lib-dom`という名前で`@better-typescript-lib/dom@2.0.0-alpha.1`をインストールするというような意味です。こうすることで、好きなパッケージを`@typescript/lib-[lib]`という名前でインストールすることができます。これを利用して、我々が用意した型定義を TypeScript に読み込ませることができます（これもややハックな気がしますが、TypeScript が公式に推奨している方法です）。
+これは例えば、`@typescript/lib-dom`という名前で`@better-typescript-lib/dom@2.0.0-beta`をインストールするというような意味です。こうすることで、好きなパッケージを`@typescript/lib-[lib]`という名前でインストールすることができます。これを利用して、我々が用意した型定義を TypeScript に読み込ませることができます（これもややハックな気がしますが、TypeScript が公式に推奨している方法です）。
 
 `better-typescript-lib`をインストールするだけでこれらの`@typescript/lib-[lib]`が TypeScript コンパイラから見えるようになるのは、node_modules の中身がフラット化される仕様を使用しているからです。PnP などの場合はうまくいかないかもしれませんが、要望次第で今後の対応が検討されるかもしれません。
 
