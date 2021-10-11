@@ -73,7 +73,7 @@ type B = NotHMT<Tuple>;
 
 配列やタプルの型の中身を加工したいという需要はそこそこあり、そのためにはhomomorphic mapped typesが必要です。
 
-# TypeScript 4.5 Betaで明るみになった問題
+# TypeScript 4.5 Betaで明るみに出た問題
 
 この記事では、特にタプル型に対するhomomorphic mapped typesに注目します。皆さんはどんな活用法を思いつくでしょうか。
 
