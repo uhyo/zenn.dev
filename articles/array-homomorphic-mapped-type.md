@@ -10,7 +10,7 @@ TypeScriptは企業によって開発されてはいるもののなかなか大�
 
 色々なissueの中で幸運にもTypeScriptチームが興味を持ったものについては、TypeScriptチームの誰かがアサインされたり、具体的なマイルストーンが与えられたりします。また、ものによってはTypeScriptチーム内のDesign Meetingという場で方向性が議論されるようです。Design Meetingの議事録は不定期にGitHub上で公開され、なかなか面白い読み物です。
 
-この記事では、そんなDesign Meetingで取り上げられた問題とその解決策が面白かったので紹介します。一言でいうと、結果が配列となることを意図したhomomorphic mapped typeだとしても、`any`が与えられてしまうと非配列型が与えられてしまうという問題です。
+この記事では、そんなDesign Meetingで取り上げられた問題とその解決策が面白かったので紹介します。一言でいうと、結果が配列となることを意図したhomomorphic mapped typeだとしても、`any`が与えられてしまうと結果が非配列型になってしまうという問題です。
 
 https://github.com/microsoft/TypeScript/issues/46247
 
