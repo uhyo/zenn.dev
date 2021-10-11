@@ -126,7 +126,7 @@ https://github.com/microsoft/TypeScript/issues/46169
 
 ```ts
 const nazo: any = 123;
-// TypeScript 4.4 では any[] 型
+// any[] とかだと嬉しいが……
 const res = await Promise.all(nazo);
 ```
 
