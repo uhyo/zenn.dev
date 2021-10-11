@@ -35,6 +35,7 @@ Homomorphic mapped typeは、普通のmapped typeにはない特別な挙動を�
 ```ts
 // homomorphic mapped typeである
 type HMT<T> = { [K in keyof T]: T[K][] };
+// homomorphic mapped typeではない
 type NotHMT<T> = { [K in Extract<keyof T, unknown>]: T[K][] };
 
 type FooObj = { readonly foo: string };
