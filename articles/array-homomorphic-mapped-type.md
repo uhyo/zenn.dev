@@ -130,7 +130,7 @@ const nazo: any = 123;
 const res = await Promise.all(nazo);
 ```
 
-`res`はTypeScript 4.4では`[unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown]`型でした。それもどうなのと思いつつ、`Promise.all`が返す値が配列であるという情報が残っています。一方で、TypeScript 4.5 Betaでは`{ [x: string]: any; }`型となります。これは`any`型を上記のhomomorphic mapped typeに通した結果です。型引数に`T extends readonly unknown[] | []`という制約があるので`T`は必ず配列型あるいはタプル型であると思いきや、実は`any`が制約をすり抜けて`T`に入ってきてしまい、その結果としてhomomorphic mapped typeが配列ではないオブジェクト型を生成してしまいました。これにより、`res`が配列型であることに依存しているコードが壊れてしまったわけです。これがTypeScript 4.5 Betaで発生した問題です。
+`res`はTypeScript 4.4では`[unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown]`型でした。それもどうなのと思いつつ、`Promise.all`が返す値が配列であるという情報が残っています。一方で、TypeScript 4.5 Betaでは`{ [x: string]: any; }`型となります。これは`any`型を上記のhomomorphic mapped typeに通した結果です。型引数に`T extends readonly unknown[] | []`という制約があるので`T`は必ず配列型あるいはタプル型であると思いきや、実は`any`が制約をすり抜けて`T`に入ってきてしまい、`any`自身は配列型として扱われないため、結果としてhomomorphic mapped typeが配列ではないオブジェクト型を生成してしまいました。これにより、`res`が配列型であることに依存しているコードが壊れてしまったわけです。これがTypeScript 4.5 Betaで発生した問題です。
 
 # 解決策
 
@@ -138,7 +138,7 @@ const res = await Promise.all(nazo);
 
 https://github.com/microsoft/TypeScript/pull/46218
 
-今回のhomomorphic mapped typeは`keyof T`の形であり、しかも`T extends readonly unknown[] | []`という制約の情報があります。そこでこのPRでは、homomorphic mapped typeに`any`が来てもその`any`が入っている型変数の制約から配列が意図していると判明するのであれば、homomorphic mapped typeの結果を配列型（`any[]`）にします。
+今回のhomomorphic mapped typeは`keyof T`の形であり、しかも`T extends readonly unknown[] | []`という制約の情報があります。そこでこのPRでは、homomorphic mapped typeに`any`が来てもその`any`が入っている型変数の制約から配列が来ることを意図していると判明するのであれば、homomorphic mapped typeの結果を配列型にします。
 
 Design Meeting Notesを見た感じでは、この方向性に対する異論はあまり無さそうに見えました。しかし、細かな議論は色々とあるようです。例えば、次のように、単なる配列型ではなく制約でタプル型の要素数まで判明している場合はそれを結果に反映すべきかどうかです。今の実装では反映されませんが、Notesに結論が載っていなかったのでどうなるかは未知数です。「どうせ`any`とか渡してる時点で型の信頼性無いんだし返り値の要素数までこだわらなくて良くない？（超意訳）[^note_1]」という意見も記録されていました。
 
@@ -155,18 +155,18 @@ type A = F<any>;
 
 ```ts
 type Objectish<T extends unknown> = { [K in keyof T]: T[K] };
-
 type IndirectArrayish<U extends unknown[]> = Objectish<U>;
+
 // type A = { [x: string]: any; }
 type A = IndirectArrayish<any>;
 ```
 
-この例では、`Objectish`に`any`を渡しても返り値は当然ながら配列型にはなりません。`T extends unknown`であって、配列型を制約としていないからです。では、`IndirectArrayish`を経由した場合はどうでしょうか。この場合、`U extends unknown[]`という制約があるので、それを`Objectish<U>`の評価の際に使用すれば配列型を返せるように思えます。しかし、現在の仕様では`IndirectArrayish`の制約であり`U extends unknown[]`は`IndirectArrayish`の定義内でのみ有効であり、`Objectish`の中を評価する際には引き継がれません。そのため、`IndirectArrayish`を使った場合も結果は配列型にはならないのです。
+この例では、`Objectish`に`any`を渡しても返り値は当然ながら配列型にはなりません。`T extends unknown`であって、配列型を制約としていないからです。では、`IndirectArrayish`を経由した場合はどうでしょうか。この場合、`U extends unknown[]`という制約があるので、それを`Objectish<U>`の評価の際に使用すれば配列型を返せるように思えます。しかし、現在の仕様では`IndirectArrayish`の制約である`U extends unknown[]`は`IndirectArrayish`の定義内でのみ有効であり、`Objectish`の中を評価する際には引き継がれません。そのため、`IndirectArrayish`を使った場合も結果は配列型にはならないのです。
 
-もし`IndirectArrayish<any>`の結果を配列型にしたいのであれば、型引数の制約を伝播させる必要があります。個人的にはそこまでしなくて良いと思いますが。制約を伝播させるかどうかについての結論は“let's take it offline”と書いてあったのでこちらも不明です。
+もし`IndirectArrayish<any>`の結果を配列型にしたいのであれば、型引数の制約を伝播させる必要があります。制約を伝播させるかどうかについての結論は“let's take it offline”と書いてあったのでこちらも不明です。個人的にはそこまでしなくて良いと思いますが。
 
 # まとめ
 
-結果を配列型にすることを意図してhomomorphic mapped typesを仕様する場合、`any`が入ってきた場合に意図しない挙動となる恐れがあります。さすが問題児ですね。しかし、TypeScript 4.5ではその場合も`any[]`のような配列型を返すようにすることで、より安心してhomomorphic mapped typesを使えるようになることが期待されます。楽しみですね。
+結果を配列型にすることを意図してhomomorphic mapped typesを使用する場合、`any`が入ってきた場合に意図しない挙動となる恐れがあります。さすが問題児ですね。しかし、TypeScript 4.5ではその場合も`any[]`のような配列型を返すようにすることで、より安心してhomomorphic mapped typesを使えるようになることが期待されます。楽しみですね。
 
 細かい仕様を追いたい方は先ほどのPRをウォッチしましょう。
