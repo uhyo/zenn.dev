@@ -245,7 +245,7 @@ const userRoutes = toplevelRoutes._.user.attach(
 
 コード生成（pathpida）は×となっていますが、pathpidaに現状そのような機能が存在しないので×としました。しかし、原理的には可能と思われます。最も、その場合生成するファイルが1つでは無理なのでなかなか厄介なのですが。
 
-実際、Next.jsのでは例えば次のように`userId`を取得します（`getServerSideProps`を使用する場合）。
+実際、Next.jsでは例えば次のように`userId`を取得します（`getServerSideProps`を使用する場合）。
 
 ```tsx
 type ServerSideProps = {
