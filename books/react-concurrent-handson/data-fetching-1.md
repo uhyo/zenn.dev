@@ -158,7 +158,43 @@ const DataLoader: React.VFC = () => {
 
 ということで、次章ではよりよいサスペンド方法を考察していきます。結論を先取りしてしまうと、何らかの手段でコンポーネントの外にデータを持つことが必要になってきます。
 
-# 余談: 再レンダリングでサスペンドしてもやはり歴史は消される
+# 再レンダリングでサスペンドしてもやはり歴史は消される
+
+ところで、コンポーネントのレンダリングがサスペンドした場合、レンダリングを試みたという事実が歴史から抹消されるのでした。これはすでにレンダリングされたコンポーネントが再レンダリング時にサスペンドした場合も例外ではありません。この場合、**その再レンダリング中にコンポーネントの記憶領域に書き込まれたものがロールバックされます**。
+
+具体的には、useStateのステート（レンダリング中にステート更新を起こすのはよろしくありませんが）やuseMemoのメモ化結果などです。後者は普通にあり得るシチュエーションなので、これを観察してみましょう。
+
+```diff tsx
+ export const DataLoader: React.VFC = () => {
+   const [loading, setLoading] = useState(false);
+   const [data, setData] = useState<string | null>(null);
+
++  const _ = useMemo(() => {
++    if (loading) {
++      console.log("loading is true");
++    }
++    return 1;
++  }, [loading]);
+
+   // ローディングフラグが立っていてdataがまだ無ければローディングを開始する
+   if (loading && data === null) {
+     throw fetchData1().then(setData);
+   }
+   // データがあればそれを表示
+   return (
+     <div>
+       <div>Data is {data}</div>
+       <button className="border p-1" onClick={() => setLoading(true)}>
+         load
+       </button>
+     </div>
+   );
+ };
+```
+
+意味のないuseMemoを追加してみました。`loading`がtrueの際にログを出力するようになっています。この状態でloadボタンを押すと、「loading is true」というログは2回出力されます。ボタンを押した直後に1回、1秒後のデータ取得完了時に1回です。
+
+これは、ボタンを押した直後に`loading`がtrueの状態でレンダリングが行われてuseMemoの関数が呼び出されたものの、そのレンダリングはサスペンドしたため、メモ化内容（useMemoの結果）が捨てられたことを意味しています。そのため、1秒後の再レンダリングでは再度useMemoの関数が呼び出されたのです。console.logを用いたデバッグはよく行われますが、サスペンドが絡んだコンポーネントをデバッグする際はこういったことにも気をつける必要があります。
 
 # まとめ
 
