@@ -12,7 +12,7 @@ title: "コンポーネントの外部にデータを持とう"
 
 ということで、最も原始的な方法でこれをやってみましょう。そう、**グローバル変数**です[^note_module_scope]。
 
-[^node_module_scope]: 正確にはグローバルスコープではなくモジュールスコープの変数ですが。
+[^note_module_scope]: 正確にはグローバルスコープではなくモジュールスコープの変数ですが。
 
 ```tsx
 let data: string | undefined;
