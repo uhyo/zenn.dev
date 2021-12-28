@@ -1,7 +1,7 @@
 title: "ReactのSuspense対応非同期処理を手書きするハンズオン"
 summary: "ReactのConcurrent Renderingで本格的に実用化されるSuspenseは、ライブラリを通して使うことになりがちでその裏側が見えにくいものです。この本では、手を動かしながら生のSuspenseの使い方を学びます。"
 topics: ["react"]
-published: false
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
