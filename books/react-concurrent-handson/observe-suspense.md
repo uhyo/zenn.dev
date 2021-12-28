@@ -6,6 +6,8 @@ title: "Suspenseの挙動を観察しよう"
 
 そこで、次はSuspenseの挙動の観察を通してSuspenseの理解を深めましょう。
 
+この章の内容を反映したブランチは`chapter/observe-suspense`です。
+
 # コンポーネントの再レンダリングの挙動を観察しよう
 
 前回作った`AlwaysSuspend`コンポーネントはPromiseをthrowしますが、そのPromiseは1秒後に解決されるのでした。しかし、画面の表示を観察しても、表示はずっと「Loading...」のままです。では、この1秒というのは何の意味があったのでしょうか。その謎は、`AlwaysSuspend`に`console.log`を仕込んでみると分かります。

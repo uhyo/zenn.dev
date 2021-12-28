@@ -11,3 +11,5 @@ chapters:
   - observe-suspense
   - data-fetching-1
   - data-fetching-2
+  - render-as-you-fetch
+  - conclusion
