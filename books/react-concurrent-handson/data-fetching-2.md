@@ -19,7 +19,7 @@ let data: string | undefined;
 
 export const DataLoader: React.VFC = () => {
   // dataがまだ無ければローディングを開始する
-  if (data === null) {
+  if (data === undefined) {
     throw fetchData1().then((d) => (data = d));
   }
   // データがあればそれを表示
