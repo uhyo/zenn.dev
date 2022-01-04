@@ -69,7 +69,7 @@ export class Loadable<T> {
 }
 ```
 
-このクラスは`new Loadable(なんらかのPromise)`のように使います。Loadableの内部でステート（`#state`）が管理され、Promiseが解決（成功または失敗）するとそのことを記録します。Promise本体とは別に管理することで、必要な場合に同期的に内容を取得できるようにします。その際に使うのが`getOrThrrow`メソッドで、Suspenseでの利用を見越した実装になっています。
+このクラスは`new Loadable(なんらかのPromise)`のように使います。Loadableの内部でステート（`#state`）が管理され、Promiseが解決（成功または失敗）するとそのことを記録します。Promise本体とは別に管理することで、必要な場合に同期的に内容を取得できるようにします。その際に使うのが`getOrThrow`メソッドで、Suspenseでの利用を見越した実装になっています。
 
 `getOrThrow`メソッドはラップされたPromiseが成功裏に解決済の場合はその値を返します。それ以外の場合、Promiseが失敗した場合はそのエラーを投げます。そして、まだ解決していない場合はPromiseを投げます。
 
