@@ -1,0 +1,15 @@
+title: "Reactのトランジションで世界を分岐させるハンズオン"
+summary: "ReactのSuspense機能に付随するトランジションは、使いこなせば有用ですが裏で何が起こっているのか分かりにくい機能です。この本では、手を動かすことでトランジションの機構をしっかりと理解することを目指します。"
+topics: ["react"]
+published: true
+price: 0 # 有料の場合200〜5000
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - introduction
+  - use-startTransition
+  - cancellation
+  - branching
+  - mixing
+  - state-updates
+  - pending
+  - conclusion
