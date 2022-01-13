@@ -30,7 +30,7 @@ startTransition(() => {
 
 では、さっそくコードを書いていきましょう。ベースとなるコードはこちらのリポジトリのmasterブランチに用意しました。
 
-https://github.com/uhyo/react-suspense-handson
+https://github.com/uhyo/react-suspense-handson-2
 
 また、`chapter/use-startTransition`ブランチのこの章の内容を反映したコードがあります。
 
