@@ -6,7 +6,7 @@ title: "はじめに"
 
 https://zenn.dev/uhyo/books/react-concurrent-handson
 
-前作ではReact 18系ののConcurrent Rendering機能の一部であるSuspense APIの使い方をハンズオンを通して学びました。
+前作ではReact 18系のConcurrent Rendering機能の一部であるSuspense APIの使い方をハンズオンを通して学びました。
 
 続編であるこの本の主役は**useTransition**および**startTransition**です。これもSuspenseと関係が深い機能であり、これを使うことでSuspenseをさらに使いこなすことができます。そこで、この本ではこれらの機能についてまたもやハンズオン形式で学びます。特に、これらの機能の最大の特徴として「レンダリングを遅延させる」そして「**世界を分岐させる**」ことが挙げられます。この本ではこの点を理解することを目指します。
 
