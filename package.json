@@ -10,10 +10,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
     "install": "^0.13.0",
     "npm": "^7.24.1",
-    "zenn-cli": "^0.1.96"
+    "zenn-cli": "^0.1.108"
   }
 }
