@@ -170,7 +170,7 @@ TypeScriptでは、クラスのフィールドをpublicにするかprivateにす
 
 今回の場合は`presentCount`をprivateにして、プレゼント増量キャンペーンをやりたい場合はそれ用のいい感じの設計を考えるべきでしょう。`presentCount`をprivateにするとこんな感じになります（JavaScript・TypeScriptでは`#`を使ってprivateなフィールドを表現できます[^soft_private]）。
 
-[^soft_private]: 歴史的経緯から`private presentCount: number:`のような書き方（いわゆるsoft private）もありますが、本文の書き方（いわゆるhard private）の方を筆者としては推奨します。
+[^soft_private]: 歴史的経緯から`private presentCount: number;`のような書き方（いわゆるsoft private）もありますが、本文の書き方（いわゆるhard private）の方を筆者としては推奨します。
 
 ```ts
 class Human {
