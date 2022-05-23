@@ -116,3 +116,61 @@ main strong {
 このように、`to`で示された要素はスコープの終端（scoping limit）となり、それより下はスコープの範囲外となります。
 
 ## スコープの便利な使用例
+
+冒頭で紹介した仕様書では、`@scope`の活用例のアイデアが載っています。それが面白かったのでここで紹介します。
+
+そのアイデアとは、コンポーネントベースのCSSを`@scope`を用いて実装する方法です。コンポーネントベースでアプリケーションを組み立てる際には、そのコンポーネント用のCSSはそのコンポーネントだけに適用されるということが重要です。`@scope`を用いて、かつコンポーネントから出力されるHTMLにひと工夫加えることによって、これをいい感じに実装できます。
+
+具体的には、各コンポーネント（MainとSubがあると仮定しましょう）のルート要素に`data-scope`属性を持たせます。Reactで書くとしたらこんな感じでしょう。
+
+```jsx
+const MainComponent = () => {
+  return (
+    <section data-scope="main-component">
+      <p>...</p>
+      <SubComponent />
+    </section>
+  );
+}
+
+const SubComponent = () => {
+  return (
+    <section data-scope="sub-component">
+      <p>...</p>
+    </section>
+  );
+}
+```
+
+これをレンダリングしたらこんな感じになるでしょう（次のHTMLは仕様書からの引用です）。
+
+> ```html
+> <section data-scope="main-component">
+>   <p>...<p>
+>   <section data-scope="sub-component">
+>     <!-- children are only in the inner scope -->
+>     <p>...<p>
+>   </section>
+> </section>
+> ```
+
+それに対して、次のようなCSSを書くことで、各コンポーネントだけに適用されるスタイルを書くことができます（次のCSSも仕様からの引用です。ただしコメントは省略）。
+
+> ```css
+> @scope ([data-scope='main-component']) to ([data-scope]) {
+>   p { color: red; }
+>   section { background: snow; }
+> }
+>
+> @scope ([data-scope='sub-component']) to ([data-scope]) {
+>   p { color: blue; }
+>   section { color: ghostwhite; }
+> }
+> ```
+
+
+この例では2つ`@scope`があり、1つ目が`main-component`用のスタイル、2つ目が`sub-component`用のスタイルを担当しています。例えば1つ目のスコープ定義は「`data-scope`属性が`'main-component'`という値を持つ要素から、何かしらの`data-scope`属性を持つ要素まで」という意味です。すべてのコンポーネント（由来の要素）が`data-scope`を持つようにしておけば、この定義によってスコープを「`main-component`の中の要素、ただし他のコンポーネントの中は除く」という範囲にすることができます。つまり、`main-component`の中だけに適用されるスタイルを書くことができたのです。2つ目も同様です。
+
+もちろん、上のReactのコードのようにすべてのコンポーネントに手作業で`data-scope`を持たせるのは現実的ではありませんから、実用の際にはUIライブラリとかCSS in JSライブラリとかがよしなにやってくれることになるでしょう。
+
+仕様書では`@scope`が無い場合の従来の方法も紹介されていますが、それはコンポーネント境界だけでなく内部も含むすべての要素に`data-scope`のような印を付けて回る必要があるものです。それに比べると、`@scope`は実装の簡潔化に随分と貢献してくれることが期待できます。
