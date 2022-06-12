@@ -92,7 +92,7 @@ import { foo } from "./foo.mjs"; // ← .mjs を使用
 
 # 具体化式 (Instantiation Expression)
 
-**具体化式** (Instantiation Expression) はTypeScript 4.7で新たに追加された構文です。これは、これは、第4章で説明したような型引数を持つ関数（ジェネリック関数）に対して使用できる式です。
+**具体化式** (Instantiation Expression) はTypeScript 4.7で新たに追加された構文です。これは、第4章で説明したような型引数を持つ関数（ジェネリック関数）に対して使用できる式です。
 
 具体化式を一言で言うと、「**関数に型引数だけ与えて呼び出さない**」という構文だと理解できます。
 
