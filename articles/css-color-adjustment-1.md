@@ -8,7 +8,7 @@ published: true
 
 皆さんこんにちは。この記事では、筆者が最近勉強した **[CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/)** の内容をご紹介します。
 
-この仕様は記事執筆現在Canditate Recommendationという段階にあり、一部ブラウザでの実装もされています。
+この仕様は記事執筆現在Candidate Recommendationという段階にあり、一部ブラウザでの実装もされています。
 
 # どんな仕様？
 
