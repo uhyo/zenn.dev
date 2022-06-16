@@ -36,7 +36,7 @@ function someFunc<T extends {}>(x: T) {
 someFunc(null);
 ```
 
-この辺りの背景としては、任意の値を表す`undefined`型が`{}`型に比べて新参であるという事情があります。そのため、歴史的経緯から`extends`を持たない型引数は暗黙のうちに`extends {}`とみなされていたことになります。今回、それが修正されてあるべき姿になりました。ちなみに、TypeScript 4.7以前でも`T extends unknown`と明示的な制約をつければ`T`に`null`や`undefined`の可能性があると認識されます。
+この辺りの背景としては、任意の値を表す`unknown`型が`{}`型に比べて新参であるという事情があります。そのため、歴史的経緯から`extends`を持たない型引数は暗黙のうちに`extends {}`とみなされていたことになります。今回、それが修正されてあるべき姿になりました。ちなみに、TypeScript 4.7以前でも`T extends unknown`と明示的な制約をつければ`T`に`null`や`undefined`の可能性があると認識されます。
 
 # `unknown`を`{}`に絞り込めるようになった
 
