@@ -1,9 +1,9 @@
 ---
-title: "最速攻略！　Reactの `use` RFC、あるいはレンダリングの非同期化"
-emoji: "✨"
+title: "最速攻略！　Reactの `use` RFC"
+emoji: "🔬"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["react"]
-published: false
+published: true
 ---
 
 皆さんこんにちは。最近のReact界隈で話題になっているのは次のRFCです。
