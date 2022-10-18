@@ -323,4 +323,4 @@ Reactはこれまで、サードパーティライブラリと協調しながら
 
 好評につき続編ができました↓
 
-https://zenn.dev/uhyo/react-use-rfc-2
+https://zenn.dev/uhyo/articles/react-use-rfc-2
