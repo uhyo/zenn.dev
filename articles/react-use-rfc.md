@@ -129,7 +129,7 @@ function Note({id, shouldIncludeAuthor}) {
 }
 ```
 
-ここで使われている`fetchNode`の実装がこんな感じだとすると、このコンポーネントは再レンダリングのたびに再び`fetch`が発火してしまうことになります。例えば、`id`はそのままで`shouldIncludeAuthor`だけ変化した場合も、`fetchNote(id)`が再実行されます。それどころか、`use`はサスペンド後に関数コンポーネントを再実行するので、1回のレンダリングでも複数回発火してしまいます。
+ここで使われている`fetchNote`の実装がこんな感じだとすると、このコンポーネントは再レンダリングのたびに再び`fetch`が発火してしまうことになります。例えば、`id`はそのままで`shouldIncludeAuthor`だけ変化した場合も、`fetchNote(id)`が再実行されます。それどころか、`use`はサスペンド後に関数コンポーネントを再実行するので、1回のレンダリングでも複数回発火してしまいます。
 
 ```ts
 const fetchNote = async (id: string) => {
