@@ -1,0 +1,14 @@
+title: "Next.jsが出てこないReact Server Componentsハンズオン"
+summary: "React Server Componentsを触ってみたログを本にまとめました。"
+topics: ["react"]
+published: true
+price: 0 # 有料の場合200〜5000
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - intro
+  - try-server
+  - client-component
+  - client-rendering
+  - unified-app
+  - async
+  - conclusion
