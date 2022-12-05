@@ -227,7 +227,7 @@ TypeScript 4.9において特に注目すべき機能追加は`satisfies`演算�
 
 この演算子の構文は`式 satisfies 型`です。構文の見た目としては`as`に似ていますね。`satisfies`は`as`とは異なり安全な機能で、機会を見つけてぜひ活用したいものです。
 
-この構文は、ランタイムの挙動はとくに持ちません。つまり、ランタイムの挙動はただの`式`と同じです。`satisfies`の役目は追加の型チェックを提供することにあります。この点で、`const`宣言や関数の返り値に対する型注釈と似た立ち位置にあります。
+この構文は、ランタイムの挙動はとくに持ちません。つまり、JavaScriptにコンパイル後は`satisfies 型`部分が消えて、ランタイムの挙動はただの`式`と同じになります。`satisfies`の役目は追加の型チェックを提供することにあります。この点で、`const`宣言や関数の返り値に対する型注釈と似た立ち位置にあります。
 
 基本的な`satisfies`の挙動は単純で、`式`が`型`に代入可能であることをチェックするという意味になります。
 
@@ -236,6 +236,11 @@ TypeScript 4.9において特に注目すべき機能追加は`satisfies`演算�
 const foo = 3 satisfies number;
 // { pika: "chu" } は Record<string, string>に代入可能なのでOK
 const obj = { pika: "chu" } satisfies Record<string, string>;
+```
+
+```js:コンパイル後のコード
+const foo = 3;
+const obj = { pika: "chu" };
 ```
 
 ```ts:コンパイルエラーが発生する例
