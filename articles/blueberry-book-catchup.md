@@ -12,7 +12,7 @@ https://gihyo.jp/book/2022/978-4-297-12747-3
 
 そこで、この記事では読者に向けたアフターサポートとして、本の発売時から現在までに増えた機能や変わったところをご紹介します。
 
-現在のTypeScript最新版は**4.7**です。
+現在のTypeScript最新版は**4.9**です。
 
 :::message
 この記事では、本に載せるレベルの機能追加や、本に書いてあることが変わってしまうところを抜粋して取り扱います。TypeScriptの更新は大小色々ありますが、小さいものはこの記事では省いています。
@@ -90,7 +90,7 @@ import { foo } from "./foo.mjs"; // ← .mjs を使用
 
 さらに、package.jsonのexportsフィールドはNode.js発の機能ですが、webpackなどのバンドラからもサポートがあり、フロントエンド開発などでも利用されています。そのため、フロントエンド向けのTypeScriptプロジェクトでも`module`を`node16`/`nodenext`にする機会が今後あるはずです。フロントエンドのプロジェクトなのに設定に`node`と書くのは違和感があるかもしれませんが、Node.jsに由来するデファクトスタンダードを利用するというように捉えればよいでしょう。
 
-# 具体化式 (Instantiation Expression)
+## 具体化式 (Instantiation Expression)
 
 **具体化式** (Instantiation Expression) はTypeScript 4.7で新たに追加された構文です。これは、第4章で説明したような型引数を持つ関数（ジェネリック関数）に対して使用できる式です。
 
@@ -135,11 +135,11 @@ const repeatNumber = (repeat);
 const ErrorMap = Map<string, Error>;
 ```
 
-# 型引数に対する変性アノテーション
+## 型引数に対する変性アノテーション
 
 TypeScript 4.7では型引数に対して変性アノテーション (variance annotation) を書ける機能が追加されました。
 
-## 変性とは
+### 変性とは
 
 変性 (variance) とは、**共変**や**反変**といった性質のことです。本書では、**4.3.2**「引数の型による部分型関係」などで解説しています。例えば、関数型においては引数の型は反変の位置にある一方、返り値の型は共変の位置にあります。
 
@@ -193,3 +193,240 @@ type Func<out T, in U> = (arg: T) => U;
 ```
 
 変性アノテーションは書かなくても推論してもらえるものですが、書くことでよりコードが読みやすくなったり、ミスを検知しやすくなったりという効果を得ることができます。
+
+# TypeScript 4.8での更新
+
+公式アナウンス: https://devblogs.microsoft.com/typescript/announcing-typescript-4-8/
+
+TypeScript 4.8では、特筆すべき言語機能の追加はありませんでした。一方で、型推論周りの改善がひとつあり、`unknown`型の使い勝手が向上しました。
+
+具体的に言えば、`unknown`に対して`!== null`や`!== undefined`といった絞り込みが効くようになります。
+
+```ts
+function useUnknown(value: unknown) {
+  if (value !== null && value !== undefined) {
+    // TypeScript 4.7: valueはunknownのまま
+    // TypeScript 4.8: valueは{}型
+  }
+}
+```
+
+このように、`unknown`型からnullとundefinedの可能性を除外した場合、TypeScript 4.8からは`{}`型に変化します。`{}`型は空のオブジェクト型です。これは本にも説明があったように、nullとundefined以外の任意の値に当てはまる型です。とりあえず条件分岐でnullとundefinedを除外するのは頻出の処理ですから、その場合に対応が入るのは嬉しいですね。
+
+より詳しい説明を以下の記事でしているので、あわせてご参照ください。
+
+https://zenn.dev/uhyo/articles/typescript-4-8-type-narrowing
+
+# TypeScript 4.9での更新
+
+公式アナウンス: https://devblogs.microsoft.com/typescript/announcing-typescript-4-9/
+
+## `satisfies` 演算子の追加
+
+TypeScript 4.9において特に注目すべき機能追加は`satisfies`演算子です。
+
+この演算子の構文は`式 satisfies 型`です。構文の見た目としては`as`に似ていますね。`satisfies`は`as`とは異なり安全な機能で、機会を見つけてぜひ活用したいものです。
+
+この構文は、ランタイムの挙動はとくに持ちません。つまり、ランタイムの挙動はただの`式`と同じです。`satisfies`の役目は追加の型チェックを提供することにあります。この点で、`const`宣言や関数の返り値に対する型注釈と似た立ち位置にあります。
+
+基本的な`satisfies`の挙動は単純で、`式`が`型`に代入可能であることをチェックするという意味になります。
+
+```ts:コンパイル可能な例
+// 3はnumberに代入可能なのでOK
+const foo = 3 satisfies number;
+// { pika: "chu" } は Record<string, string>に代入可能なのでOK
+const obj = { pika: "chu" } satisfies Record<string, string>;
+```
+
+```ts:コンパイルエラーが発生する例
+// エラー: Type 'number' does not satisfy the expected type 'string'.
+const foo = 3 satisfies string;
+// エラー: Type 'string' is not assignable to type 'number'.
+const obj = { pika: "chu" } satisfies Record<string, number>;
+```
+
+### 変数の型注釈との違い
+
+上の例を見ると、`satisfies`を使わなくても次のようにすれば良いようにも思えます。
+
+```ts
+// これでも同じ？
+const foo: number = 3;
+const obj: Record<string, string> = { pika: "chu" };
+```
+
+実際、書いた式が目的の型に合っているかをチェックしたければ上のように書けます。
+
+実は、`satisfies`は上記のように変数の型注釈を使う場合に比べて利点があります。それは、**式から推論された具体的な型が保存される**という点です。このことを確かめてみましょう。
+
+```ts
+// foo1 は number 型
+const foo1: number = 3;
+// foo2 は 3 型
+const foo2 = 3 satisfies number;
+```
+
+変数の型注釈を使う場合と`satisfies`を使う場合とを比べると、変数`foo1`は型が`number`となっていて（型注釈でそう書いてあるから当然ですが）、その中身が具体的には3であるという情報が消えています。一方、`foo2`では変数の型が`3`（数値のリテラル型）となっていて、`3`という式から推論された型が生きています。
+
+このように、`satisfies`を使うことで式の型推論の結果をフルに活用することができます。上の例だといまいちありがたみが分かりませんが、次の例ではより分かりやすいでしょう。
+
+```ts
+const obj1: Record<string, string> = { pika: "chu" };
+const obj2 = { pika: "chu" } satisfies Record<string, string>;
+
+obj1.pika; // string | undefined （noUncheckedIndexedAccess: trueの場合）
+obj2.pika; // string
+
+obj1.pikachu; // string | undefined
+obj2.pikachu; // コンパイルエラー
+```
+
+このように、`obj1`では「`pika`プロパティが存在する」という情報が型から消えていますが、`obj2`では残っています。
+
+### `satisfies`の有用な使い方
+
+実は、`satisfies`は本のコラムで説明した「値を最上位の事実とする」パターンと組み合わせるのが特に有用です。上の例では`typeof obj2`は`{ pika: string; }`となり、`obj1`に比べるとキー名の情報が残っている分だけ型情報がより有用です。この型を起点に他のところで例えば`keyof typeof obj2`などいった形で発展させられます。
+
+このように式の型推論の結果を`typeof`で取り出したい場合は、当然ながらその変数には型注釈を付けられませんでした。そのため、従来は根本となる定義（上の例の`obj2`）に対して型チェックを行いにくいのが問題でした。
+
+例えば、`obj2`は「何らかのキーに対して文字列が入っている」という形のオブジェクトになっていることが期待されていたとします。つまり、`{ pika: 12345 }`のような定義だとしたらコンパイルエラーで弾きたかったとしましょう。これはまさに`satisfies`がやってくれることです。
+
+```ts
+const obj2 = { pika: "chu" } satisfies Record<string, string>;
+```
+
+この例では`obj2`は「`Record<string, string>`型を満たす」という、すなわちすべてのキーの型は`string`型であるという制約を課されれています。従来、`obj2`の型情報を損なわずに同じことをするのは少々面倒でした。以下のようなやり方がありました。
+
+```ts
+const obj2 = { pika: "chu" } satisfies Record<string, string>;
+// 別の変数に入れてチェック
+const _check: Record<string, string> = obj2; 
+```
+
+```ts
+// 制約チェック用の関数をかませる
+const obj2 = constraintCheck({ pika: "chu" });
+
+function constraintCheck<T extends Record<string, string>>(value: T): T {
+  return value;
+}
+```
+
+これらのやり方は回りくどくて、読み手に意図が伝わりにくいものでした。TypeScript 4.9での`satisfies`の導入により、このようなユースケースで分かりやすいコードを書くことができるようになったのです。
+
+### `satisfies`とContextual Typing
+
+本を読んだ方は、Contextual Typingが発生する条件についてご存じでしょう。例えば、`const 変数: 型 = 式`における`式`に対してContextual Typingが発生します。
+
+実は、`式 satisfies 型`においても`式`に対してContextual Typingが発生します。このことは、次のような例で確かめられます。
+
+```ts
+type PokemonTrainer = {
+  choose: (name: string) => string;
+};
+
+const satoshi = {
+  choose: (name) => `${name}！　きみにきめた！`
+} satisfies PokemonTrainer;
+```
+
+上の例では、Contextual Typingの効果として、関数式の引数の型注釈を省略できるという効果が表れています。
+
+他の例としては、Contextual Typeとしてリテラル型が与えられた場合には型推論の結果もリテラル型になるという効果もあります。
+
+```ts
+type PikaObj = { pika: "pika" | "chu" };
+
+// obj1 は { pika: string } 型
+const obj1 = { pika: "chu" }
+// obj2 は { pika: "chu" } 型
+const obj2 = { pika: "chu" } satisfies PikaObj;
+```
+
+このようにすると、`obj1`と`obj2`は`satisfies`があるかどうかしか違いがないところ、`pika`プロパティの型が異なっています。これもContextual Typingの効果です。
+
+## `accessor` キーワードの追加
+
+TypeScript 4.9ではもう一点構文の追加があります。それが`accessor`です。これはクラス宣言の中で使える構文であり、フィールド定義の前に付けることができます。
+
+```ts
+class A {
+  // accessor なし
+  foo: number = 1;
+  // accessor あり
+  accessor bar: number = 2;
+}
+```
+
+`accessor`の効果は、`accessor`付きで宣言されたプロパティの実態をアクセサプロパティ（`get`/`set`で宣言されたプロパティ）にするというものです。つまり、上の`bar`を`accessor`構文を使わない形で書き直すと次のようになります。
+
+```ts
+class A {
+  #bar_accessor_storage: number = 2;
+  get bar(): number {
+    return this.#bar_accessor_storage;
+  }
+  set bar(value: number) {
+    this.#bar_accessor_storage = value;
+  }
+}
+```
+
+このことから分かるように、フィールドに`accessor`キーワードを付けても基本的な挙動の違いは特になく、同じように動作します。ただし、細かな違いはあります。本書の範囲を超えますが、例えばアクセサプロパティは定義の実態がインスタンス上ではなくprototype上にあります。
+
+```ts
+class A {
+  foo: number = 1;
+  accessor bar: number = 2;
+}
+
+const a = new A();
+
+console.log(Object.hasOwn(a, "foo")); // true
+console.log(Object.hasOwn(a, "bar")); // false
+```
+
+プロパティ定義の実態が`get`/`set`なのか、あるいはプロパティ定義がインスタンス上にあるかprototype上にあるかというのは、普段意識する必要がない細かい違いです。そのため、今のところ皆さんが`accessor`をわざわざ使う場面はなさそうです。この構文が意味を成すためには、TypeScriptにデコレータ[^note_legacy_decorator]が実装されるまで待つ必要があります。
+
+[^note_legacy_decorator]: TypeScriptにすでに実装されているレガシーなデコレータ機能ではなく、ECMAScriptでStage 3まで進んだほうのデコレータです。
+
+
+## `in`演算子の機能強化
+
+TypeScript 4.9では、in演算子に新しい型絞り込み機能が追加されました。それは、型上で存在しないプロパティに対して`in`で絞り込みを行うことで、今後その名前でのプロパティアクセスが可能になるというものです。次がその例です。
+
+```ts
+function checkName(obj: unknown): obj is { name: string } {
+  if (obj === null || typeof obj !== "object") {
+    return false;
+  }
+  if (!("name" in obj)) {
+    return false;
+  }
+  // ここで obj は object & { name: unknown } 型となる
+  return typeof obj.name === "string";
+}
+```
+
+この例の`checkName`は、渡された値が文字列型の`name`プロパティを持つオブジェクトかどうか調べる関数です。最終的に`typeof obj.name === "string"`を確かめるのがやりたいことですが、いきなり`obj.name`にアクセスしようとするとコンパイルエラーになります。
+
+最初のif文で`obj`を絞り込むことで`obj`が`object`型になります。in演算子の右オペランドはオブジェクトでなければいけないため、このような絞り込みをしています。
+
+次のif文でin演算子を用いた絞り込みを行っており、`obj`が`name`プロパティを持つことが確認できます。ただ、`name`の中身が分からないので`unknown`型として扱われます。よって、`obj`が`{ name: unknown }`型に絞り込みまれます（従来の`object`型の情報を消さないためにインターセクション型を用いて`object & { name: unknown }`と表されます）。ここがTypeScript 4.9の新機能です。
+
+この機能は、上の例のようにユーザー定義型ガードを書く際に便利です。また、公式の例では`package.json`の読み込みが例に挙げられていました。外部のJSONファイルを読み込む場合は、何が書いてあるのか分からないため型を`unknown`型とせざるを得ません。そのような値に対して探索的にデータ読み込みを行う場合にはin演算子が便利です。
+
+ただし、一点注意があります。それは、このようなin演算子の利用が、ランタイムエラーを防ぐという意味での型安全性に直接的に寄与しているわけではないという点です。というのも、`obj`がnullまたはundefinedではないと分かった時点で、ランタイムでは`obj`に好きな名前でプロパティアクセスしてもエラーにならないはずだからです。そのため、型安全性のためだけなら次のような方法でも代替できます。こちらが従来筆者が好んでいた方法です。
+
+```ts
+function checkName(obj: unknown): obj is { name: string } {
+  if (obj === null || typeof obj !== "object") {
+    return false;
+  }
+  const obj2: Partial<Record<string, unknown>> = obj;
+  return typeof obj2.name === "string";
+}
+```
+
+従来の方法と比べると、in演算子は特定のプロパティ名のみをピンポイントで拡張できるため、タイプミスにより強いという利点があるかもしれません。
+
