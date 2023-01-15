@@ -13,7 +13,7 @@ title: "Suspenseの挙動を観察しよう"
 前回作った`AlwaysSuspend`コンポーネントはPromiseをthrowしますが、そのPromiseは1秒後に解決されるのでした。しかし、画面の表示を観察しても、表示はずっと「Loading...」のままです。では、この1秒というのは何の意味があったのでしょうか。その謎は、`AlwaysSuspend`に`console.log`を仕込んでみると分かります。
 
 ```diff tsx
- const AlwaysSuspend: React.VFC = () => {
+ const AlwaysSuspend: React.FC = () => {
 +  console.log("AlwaysSuspend is rendered");
    throw sleep(1000);
  };
@@ -32,7 +32,7 @@ title: "Suspenseの挙動を観察しよう"
 しかし、これだけだと面白くないので、サスペンドが終わったときの挙動も見てみたいですね。いきなりちゃんとしたものを作り込むのは結構大変なので、またもや変なコンポーネントを導入します。その名も`SometimesSuspend`です。これは50%の確率でサスペンドし、それ以外の場合はレンダリングに成功します。
 
 ```tsx
-export const SometimesSuspend: React.VFC = () => {
+export const SometimesSuspend: React.FC = () => {
   if (Math.random() < 0.5) {
     throw sleep(1000);
   }
@@ -102,7 +102,7 @@ type Props = {
   name: string;
 };
 
-export const RenderingNotifier: React.VFC<Props> = ({ name }) => {
+export const RenderingNotifier: React.FC<Props> = ({ name }) => {
   console.log(`${name} is rendered`);
 
   return null;
