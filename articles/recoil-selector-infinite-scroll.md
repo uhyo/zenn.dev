@@ -109,7 +109,11 @@ async function getListFromAPI(totalItems: number): Data[] {
 }
 ```
 
-ところが、関数型言語だと`let`が無かったり配列を破壊的変更できなかったりします。そういう場合は、再帰関数を使うと次のように実装できます。
+ところが、関数型言語だと`let`が無かったり配列を破壊的変更できなかったりします。その場合は、上のような実装はできません。
+
+そして、Recoilのselectorを書くときの環境も実際このような状態です。破壊的変更ができないのは言わずもがな、`let`が無いというのは「selectorの値を計算するときにselectorの以前の値を利用することができない」という制約に相当します。そのため、上の実装をそのままRecoilのselectorに治すことはできません。
+
+では、どうすれば良いでしょうか。実は、再帰関数を使えば次のように実装できます。
 
 ```ts
 async function getListFromAPIRec(totalItems: number, offset: number): Data[] {
@@ -131,7 +135,7 @@ function getListFromAPI(totalItems: number): Data[] {
 
 つまり、`getListFromAPIRec`の1回の呼び出しで1ページを取得し、まだデータが足りなければoffsetをずらして再帰呼び出しします。このようにすることで、同じ処理がイミュータブルに実装できました。
 
-この記事では、同じことをRecoilで行います。こうすることで、selectorだけで無限スクロールが実装できます。図にするとこのようになります。
+この実装ならば、Recoilでも再現できます。そうすればselectorだけで無限スクロールが実装できます。図にするとこのようになります。
 
 ![リストselectorが裏で再帰selectorを呼び出し、再帰selectorは3回再帰している。再帰selectorは裏でurql selectorを呼び出している](/images/recoil-selector-infinite-scroll/graph2.png)
 
