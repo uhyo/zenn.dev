@@ -376,14 +376,68 @@ export const usePaging = () => {
 
 記事の序盤で述べた通り、要素数（`totalItems`）を増やすだけです。とても宣言的で嬉しいですね。
 
+# 【追記】再帰、不要だった
+
+再帰selectorとかイキっておいて何なのですが、公開後一晩寝かせて考えると、別に再帰させなくてもよいことに気づきました。この記事のポイントはページごとのリクエストを別々のselectorに分けることなので、それらをつなぎ合わせるところはループでも大丈夫でした。
+
+ということで、ループで書き直したコードがこちらです。[GitHubの`no-recursion`ブランチ](https://github.com/uhyo/recoil-infinite-scroll-sample/tree/no-recursion)にも置いてあります。
+
+:::details 再帰を使わない実装
+
+```ts
+export const pokemonList = selector<PokemonListState>({
+  key: "dataflow/pokemonList",
+  get({ get }) {
+    const chunks: (readonly Pokemon[])[] = [];
+    const requestedItems = get(totalItems);
+    let mightHaveMore = true;
+    mainLoop: for (let offset = 0; offset < requestedItems; ) {
+      const limit = Math.min(requestedItems - offset, pageSize);
+      const pokemons = get(
+        noWait(
+          formattedPokemonListQuery({
+            limit,
+            offset,
+          })
+        )
+      );
+      switch (pokemons.state) {
+        case "hasError": {
+          throw pokemons.errorMaybe();
+        }
+        case "loading": {
+          return {
+            pokemons: chunks.flat(1),
+            mightHaveMore: true,
+          };
+        }
+        case "hasValue": {
+          chunks.push(pokemons.contents);
+          offset += pokemons.contents.length;
+          if (pokemons.contents.length < limit) {
+            mightHaveMore = false;
+            break mainLoop;
+          }
+          break;
+        }
+      }
+    }
+    return {
+      pokemons: chunks.flat(1),
+      mightHaveMore,
+    };
+  },
+});
+```
+
+:::
+
+また、こうなってくるとすでに読んだデータのキャッシュもRecoilではなくGraphQLクライアント（urql）で良いような気がしてきますが、個人的にはRecoilとGraphQLクライアントで2つもキャッシュ層を持ちたくないので、そこはRecoil側に寄せてGraphQLクライアントのキャッシュは使わない構えです。
+
+いちおう言い訳しておくと、終端条件の判断など再帰の方がややきれいに書けている感があります。それもあってか、再帰の実装を思いついたあとはループでもできるという発想が出ませんでした。恥ずかしい限りです。
+
 # まとめ
 
 この記事では、Recoilにおいてコアな状態だけをatomにするという設計を保ちながら、無限スクロールを実装する方法を紹介しました。
 
-ポイントは、普通にやるとミューテーションが必要になる（＝atomが必要になる）ところを再帰selectorによって解決している点です。再帰selectorはロジックをselectorに載せるにあたって有用なテクニックですから、ぜひ使ってみてください。
-
-## Q&A
-
-**Q.** 再帰selectorとか正気か？
-
-**A.** Twitterで「再帰関数とか正気か？」と言ってみてください。多分燃えますよ。
+ポイントは、「データを追加で読み込んでステートに追記する」という発想だとミューテーションが必要になる（＝atomが必要になる）ところを、selectorを繋げる設計で解決しているところです。やや設計が複雑に見えますが、筆者の考えではatomが増えるよりはこのほうがずっとマシです。状態が少ないことはそれだけ大きな利点があります。皆さんも、状態を極限まで削減するのに挑戦してみてはいかがでしょうか。
