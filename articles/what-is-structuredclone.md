@@ -28,7 +28,7 @@ HTML仕様書ということはこのAPIはブラウザ環境向けに定義さ�
 
 そして、実はstructuredCloneという関数は、オブジェクトのディープコピー用のAPIとして一からデザインされたわけではありません。それよりも昔からブラウザは内部的にオブジェクトのディープコピーを行なっており、それが存在するならユーザーランドからも使われてほしいという要望からstructuredCloneが生まれました。
 
-このブラウザの内部で行われていたディープコピーアルゴリズムがStructureed Clone Algorithmであり、structuredCloneという関数名は明らかに「Structured Clone Algorithmを実行する」という意味を表したものです。ポイントは、「structuredClone関数を実装するためにStructured Clone Algorithmが定義された」のではなく、「Structured Clone Algorithmが先にあり、それを簡単に呼び出せるものとしてstructuredCloneが定義された」という順序であることです。Structured Clone Algorithm自体がいつから存在するかについては筆者は調査していません。
+このブラウザの内部で行われていたディープコピーアルゴリズムがStructured Clone Algorithmであり、structuredCloneという関数名は明らかに「Structured Clone Algorithmを実行する」という意味を表したものです。ポイントは、「structuredClone関数を実装するためにStructured Clone Algorithmが定義された」のではなく、「Structured Clone Algorithmが先にあり、それを簡単に呼び出せるものとしてstructuredCloneが定義された」という順序であることです。Structured Clone Algorithm自体がいつから存在するかについては筆者は調査していません。
 
 そのため、structuredCloneの挙動はStructured Clone Algorithmの挙動そのままです。それゆえに、汎用的なディープコピー関数として見るとやや不思議なところがあります。この記事ではこの点に注目しながらをstructuredCloneの挙動を解説します。
 
@@ -101,7 +101,7 @@ obj2.foo // => 1
 obj2 instanceof MyClass // => false
 ```
 
-独自クラスのインスタンスをコピーできない理由は、クラスも関数オブジェクトの一緒でありシリアライズできないからです。
+独自クラスのインスタンスをコピーできない理由は、クラスも関数オブジェクトの一種でありシリアライズできないからです。
 
 また、仮にシリアライズできたとしても困難があります。コピー先に`MyClass`が存在するとは限らないため、`MyClass`ごとコピーする必要があります。その場合、コピー先からそのインスタンスを再度元の実行コンテキストにコピーしてきた場合はどうなるでしょうか。そのオブジェクトは、元の`MyClass`のインスタンスではなく2回コピーされた別物の`MyClass`のインスタンスとなることが予想されます。
 
@@ -119,7 +119,7 @@ const sym1 = Symbol("foo");
 const sym2 = structuredClone(sym1);
 ```
 
-データ構造的にはSymbolはコピーできそうですが、それにも関わらずSymbolをコピーできないようになっているは、おそらくSymbolをコピーする意味がないからでしょう。
+データ構造的にはSymbolはコピーできそうですが、それにも関わらずSymbolをコピーできないようになっているのは、おそらくSymbolをコピーする意味がないからでしょう。
 
 そもそもSymbolは文字列以外でオブジェクトのプロパティ名に使えることが特徴です。文字列は誰でも同じものを用意できる一方、Symbolはモジュールスコープの中などに隠しておけば他のコードから干渉されません[^note_objectgetownpropertysymbols]。偶然による事故が起きないのが利点です。
 
