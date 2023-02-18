@@ -2,7 +2,7 @@
 title: "structuredCloneはどんなものか"
 emoji: "🏰"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["javascript"]
+topics: ["javascript", "htmlstandard"]
 published: true
 ---
 
