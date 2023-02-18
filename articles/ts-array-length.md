@@ -16,7 +16,7 @@ https://github.com/uhyo/ts-array-length
 
 ts-array-lengthは3つの関数を提供しており、これらを使うことでなんと**配列の要素数をチェックできます**。
 
-例えば`hasLength`を使うと、配列の要素がちょうど1個かどうか調べることができます。
+例えば`hasLength`を使うと、配列の要素がちょうど2個かどうか調べることができます。
 
 ```ts
 if (hasLength(arr, 2)) {
