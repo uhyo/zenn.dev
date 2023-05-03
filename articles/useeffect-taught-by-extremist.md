@@ -442,6 +442,8 @@ const Timer2 = () => {
 
 結局、個々の例の評価についてはReact公式ドキュメントの[useEffect](https://react.dev/reference/react/useEffect)や[You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)といったページに書かれていることと大差ないものになりました。公式ドキュメントはすごいですね。今回の記事では、それらに対して少ない原則から説明を与えたところを評価してもらえればと思います。
 
+ただ、この記事ではクリーンアップ関数のないuseEffectを全否定していますが、多分React公式はそこまで厳しい考え方ではなさそうです。この辺りが過激派要素です。
+
 文中に出てきた原則やその帰結をまとめておきます。
 
 **基本原則:**
