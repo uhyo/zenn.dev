@@ -222,7 +222,6 @@ const NicePage = () => {
       track("view", { page: "NicePage" });
       eventFiredRef.current = true;
     }
-  }, [router.pathname]);
   }, []);
 
   return <div>...</div>;
