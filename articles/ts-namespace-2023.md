@@ -3,7 +3,7 @@ title: "令和5年に知っているべきTypeScriptのnamespaceの知識"
 emoji: "📛"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["typescript"]
-published: false
+published: true
 ---
 
 TypeScriptには`namespace`という構文が存在します。この構文はTypeScript初期からある独自構文の一つですが、現在では特殊な用途以外では使う理由が無いため、よく知らないという方も多いでしょう。
