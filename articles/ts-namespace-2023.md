@@ -36,7 +36,7 @@ namespace Foo {
 
 ## namespaceを発生させるもう一つの方法
 
-`namespace`構文を使わずに`Foo.Bar`を定義する方法はもう一つあります。それは`import *`構文を使用することです。
+もう一つ、`namespace`構文を使わずに`Foo.Bar`を定義する方法があります。それは`import *`構文を使用することです。
 
 ```ts:Foo.ts
 export type Bar = string;
