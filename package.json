@@ -13,7 +13,7 @@
   "devDependencies": {
     "install": "^0.13.0",
     "npm": "^7.24.1",
-    "zenn-cli": "^0.1.141"
+    "zenn-cli": "^0.1.143"
   },
   "volta": {
     "node": "18.12.1"
