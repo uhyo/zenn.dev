@@ -112,7 +112,7 @@ const App: React.FC = () => {
   );
 }
 // サーバー用コンポーネント
-const Section: React.FC<React.ChildrenWithProps<{
+const Section: React.FC<React.PropsWithChildren<{
   heading: string;
 }> = ({ heading, children }) => {
   return (
@@ -124,7 +124,7 @@ const Section: React.FC<React.ChildrenWithProps<{
 }
 
 // サーバー用コンポーネント
-const P: React.FC<React.ChildrenWithProps> = ({ children }) => {
+const P: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <p className="text-lg text-gray-800">{children}</p>;
 };
 
