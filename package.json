@@ -12,8 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "install": "^0.13.0",
-    "npm": "^7.24.1",
-    "zenn-cli": "^0.1.143"
+    "zenn-cli": "^0.1.144"
   },
   "volta": {
     "node": "18.12.1"
