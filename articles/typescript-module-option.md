@@ -1,5 +1,5 @@
 ---
-title: "TypeScriptのmoduleプションの話、あるいはTypeScript開発者の苦悩、あるいはCJSとESMの話"
+title: "TypeScriptのmoduleオプションの話、あるいはTypeScript開発者の苦悩、あるいはCJSとESMの話"
 emoji: "⚱️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["typescript"]
