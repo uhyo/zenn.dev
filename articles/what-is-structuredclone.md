@@ -28,7 +28,7 @@ HTML仕様書ということはこのAPIはブラウザ環境向けに定義さ�
 
 そして、実はstructuredCloneという関数は、オブジェクトのディープコピー用のAPIとして一からデザインされたわけではありません。それよりも昔からブラウザは内部的にオブジェクトのディープコピーを行なっており、それが存在するならユーザーランドからも使われてほしいという要望からstructuredCloneが生まれました。
 
-このブラウザの内部で行われていたディープコピーアルゴリズムがStructured Clone Algorithmであり、structuredCloneという関数名は明らかに「Structured Clone Algorithmを実行する」という意味を表したものです。ポイントは、「structuredClone関数を実装するためにStructured Clone Algorithmが定義された」のではなく、「Structured Clone Algorithmが先にあり、それを簡単に呼び出せるものとしてstructuredCloneが定義された」という順序であることです。Structured Clone Algorithm自体がいつから存在するかについては筆者は調査していません。
+このブラウザの内部で行われていたディープコピーアルゴリズムがStructured Clone Algorithmであり、structuredCloneという関数名は明らかに「Structured Clone Algorithmを実行する」という意味を表したものです。ポイントは、「structuredClone関数を実装するためにStructured Clone Algorithmが定義された」のではなく、「Structured Clone Algorithmが先にあり、それを簡単に呼び出せるものとしてstructuredCloneが定義された」という順序であることです。Structured Clone Algorithm自体がいつから存在するかについては筆者は調査していませんが、`window.postMessage`に必要なので、いわゆるHTML5が出始めたころにはあったのでしょう。
 
 そのため、structuredCloneの挙動はStructured Clone Algorithmの挙動そのままです。それゆえに、汎用的なディープコピー関数として見るとやや不思議なところがあります。この記事ではこの点に注目しながらをstructuredCloneの挙動を解説します。
 
@@ -141,7 +141,7 @@ export function getDataToObj(obj) {
 
 他にも、Symbolは`Symbol.for`を用いると同一のキーに対しては同一のSymbolを得ることができるというGlobal Symbol Registryの機能も備えていますが、別の実行コンテキストに送られると当然この情報も保持されません。この点も問題となるでしょう。
 
-# Web APiのちょっとした利点
+# Web APIのちょっとした利点
 
 さて、あなたがNode.jsを使用する開発者だとして、Node.jsでのstructuredCloneの挙動を調べるにはどうするでしょうか。
 
