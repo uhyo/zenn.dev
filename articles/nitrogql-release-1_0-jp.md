@@ -186,8 +186,6 @@ extensions:
 
 ## GraphQL Code Generatorから移行する
 
-If you are already using GraphQL Code Generator, you might want to migrate to nitrogql. Migration will be a tough process because they are not fully compatible. However, we have a detailed migration guide for you.
-
 あなたがすでにGraphQL Code Generatorを使っている場合、nitrogqlに移行したいと思うかもしれません。互換性が完璧にあるわけではないため、移行は大変な作業です。しかし、詳細な[移行ガイド](https://nitrogql.vercel.app/guides/migrating-from-graphql-codegen)をご用意しています。
 
 ## チェックだけ使う
