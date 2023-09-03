@@ -97,7 +97,7 @@ query getPosts {
 
 ## なぜnitrogqlを使うのか
 
-あなたはすでに、nitrogqlと同じような機能を持つ他のツールをご存知かもしれません。特に、[GraphQL Code Generator](https://graphql-code-generator.com/)はGraphQL向けコード生成の分野人気のツールです。
+あなたはすでに、nitrogqlと同じような機能を持つ他のツールをご存知かもしれません。特に、[GraphQL Code Generator](https://graphql-code-generator.com/)はGraphQL向けコード生成の分野で人気のツールです。
 
 では、なぜ我々はGraphQL Code Generatorを使わずにnitrogqlを作ったのでしょうか。その理由はいくつかあります。
 
