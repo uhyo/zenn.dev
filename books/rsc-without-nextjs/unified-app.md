@@ -1,5 +1,5 @@
 ---
-title: "SSRでサーバーとクライアントを統合する"
+title: "サーバーとクライアントを統合する"
 ---
 
 前章の実装では、サーバーとクライアントが完全に別々のものとして実装していました。これだと書きやすさの面でRSCの利点があまり活きていませんので、次は1つのReactアプリケーションでサーバーとクライアントの分担が実現できるようにしましょう。
@@ -144,214 +144,26 @@ J0:["$","div",null,{"children":[["$","h1",null,{"children":"React Server Compone
 
 ここまでの実装が`step5-1`ブランチにあります。
 
-## SSRの実装
-
-今回はサーバーの出力結果をRSCプロトコルではなくHTMLにしてみましょう。
-
-そのために、まず次の下準備が必要です。
-
-```diff tsx:src/app/server/App.tsx
- import { Suspense } from "react";
- import { Client } from "./Client.js";
- import { Page } from "./Page.js";
- 
- export const App: React.FC = () => {
-   return (
-     <Page>
-       <p>Hello, world!</p>
-+      <Suspense fallback={<p>Loading...</p>}>
-         <Client.Clock />
-+      </Suspense>
-     </Page>
-   );
- };
-```
-
-実は、サーバーからクライアント向けコンポーネントを使う場合、このように`Suspense`で囲むのが鉄則です。今回はSSRなのでのちのちhydrationすることになりますが、Suspenseは部分hydrationの境界となります。そもそも、前章までで見たようにクライアントコンポーネントは非同期で読み込むことが想定されているので、必然的にサスペンドします。その影響を受けない部分だけサーバーサイドでレンダリングするという意味を込めて、このようにSuspenseで囲みます。
-
-それができたら、サーバーのエントリーポイントの実装を次のように書き換えます。
-
-```tsx:src/server.tsx
-import { Readable, PassThrough } from "stream";
-import ReactDOM from "react-dom/server";
-// @ts-expect-error
-import rsdws from "react-server-dom-webpack/server";
-const { renderToPipeableStream } = rsdws;
-// @ts-expect-error
-import rsdwc from "react-server-dom-webpack/client";
-const { createFromReadableStream } = rsdwc;
-
-import { App } from "./app/server/App.js";
-import { bundlerConfig } from "./app/server/Client.js";
-// @ts-expect-error
-import { use } from "react";
-
-const stream = Readable.toWeb(
-  renderToPipeableStream(<App />, bundlerConfig).pipe(new PassThrough())
-);
-
-class ClientComponentError extends Error {}
-
-const chunk = createFromReadableStream(stream);
-// @ts-expect-error
-globalThis.__webpack_require__ = async () => {
-  throw new ClientComponentError("Client Component");
-};
-
-const Container = () => {
-  return use(chunk);
-};
-
-ReactDOM.renderToPipeableStream(<Container />, {
-  onError(error) {
-    if (error instanceof ClientComponentError) {
-      // 握りつぶす
-      return;
-    }
-    console.error(error);
-  },
-}).pipe(process.stdout);
-```
-
-実装を順に解説します。
-
-```ts
-const stream = Readable.toWeb(
-  renderToPipeableStream(<App />, bundlerConfig).pipe(new PassThrough())
-);
-```
-
-ここは前章までと同じで、`react-dom-server-webpack/server`からインポートした`renderToPipeableStream`を用いてRSCのプロトコル（内部的にはReact Flightのプロトコルと言うらしいです）を出力します。今回はこれを、node.jsのstreamを経由してWHATWG Streamに変換しています。
-
-```ts
-class ClientComponentError extends Error {}
-
-const chunk = createFromReadableStream(stream);
-// @ts-expect-error
-globalThis.__webpack_require__ = async () => {
-  throw new ClientComponentError("Client Component");
-};
-
-const Container = () => {
-  return use(chunk);
-};
-```
-
-ここも前章と同じで、RSCのプロトコルの内容を出力するコンポーネントを用意しています。ただし、今回は`__webpack_require__`のダミー実装はエラーを発生させるようにしています。実はSSRの際は、Suspense境界の内側でエラーが発生した場合はそのSuspenseの中身はクライアント側でレンダリングが試みられるようになっています。これを利用し、サーバーサイドではクライアント用コンポーネントをレンダリングしないようにしています。
-
-```ts
-ReactDOM.renderToPipeableStream(<Container />, {
-  onError(error) {
-    if (error instanceof ClientComponentError) {
-      // 握りつぶす
-      return;
-    }
-    console.error(error);
-  },
-}).pipe(process.stdout);
-```
-
-ここがレンダリング結果をHTMLで出力するところです。SSR用のHTML出力APIは`react-dom/server`から得られる`renderToPipeableStream`なので、これを用います。`onError`では`__webpack_require__`から出るエラーを握りつぶしています。これは、デフォルトだとエラーがコンソールに出力されてしまうことに対する処置です。
-
-以上のコードを実行すると、次の結果が出力されます。ちゃんとHTMLが出力されていますね。Suspense部分はフォールバックになっています。`template`内にエラーメッセージとかコールスタックが出力されていますが、これは`NODE_ENV=production`にすると消えるので問題ありません。`<!--$!-->`や`<!--/%-->`といったコメントがありますが、これらはSuspense境界をクライアント側に伝えるためのものだと思われます。
-
-```html
-<div><h1>React Server Components example</h1><p>Hello, world!</p><!--$!--><template data-msg="Client Component" data-stck="
-    at Container (file:///Users/uhyo/private/rsc-without-nextjs/dist/server.js:23:12)"></template><p>Loading...</p><!--/$--></div>
-```
-
-ここまでの実装が`step5-2`ブランチにあります。
-
 ## HTMLを出力する
 
-今回はSSRということで、ちゃんと完全なHTMLを出力するようにしましょう。これは普通にStreamの出力結果の前後のHTML文字列を足すだけでよく、こういう感じになります。
+さて、ここまでの実装ではサーバーの出力結果がRSCプロトコルになっています。サーバーとクライアントをうまく統合するために、HTMLを出力してみましょう。
 
-```tsx:src/server.tsx（抜粋）
-renderHTML().then(async (html) => {
-  await writeFile("./index.html", html);
-});
+といってもここでは何か特別なことをするわけではなく、上述のRSCプロトコル文字列を含む、HTMLのガワを出力するだけです。コードを一気にお見せします。
 
-async function renderHTML() {
-  let result = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <div id="app">`;
-
-  const htmlStream = ReactDOM.renderToPipeableStream(<Container />, {
-    onError(error) {
-      if (error instanceof ClientComponentError) {
-        // 握りつぶす
-        return;
-      }
-      console.error(error);
-    },
-  }).pipe(new PassThrough());
-  for await (const chunk of htmlStream) {
-    result += chunk;
-  }
-
-  result += `</div>
-    <script type="module" src="src/client.tsx"></script>
-  </body>
-</html>`;
-  return result;
-}
-```
-
-これを動かせば、このようなHTMLが`index.html`として出力されるでしょう。うまくいっていますね。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-  </head>
-  <body>
-    <div id="app"><div><h1>React Server Components example</h1><p>Hello, world!</p><!--$!--><template data-msg="Client Component" data-stck="
-    at Container (file:///Users/uhyo/private/rsc-without-nextjs/dist/server.js:24:12)"></template><p>Loading...</p><!--/$--></div></div>
-    <script type="module" src="src/client.tsx"></script>
-  </body>
-</html>
-```
-
-ただし、今回はSSRということで、クライアントサイドでのhydrationが必要です。そのために、RSCプロトコルでの文字列も別途出力してあげる必要があります。その実装を足しましょう。
-
-:::details 時間がある方は下の結果を見て自分で実装してみましょう
-
-```ts:src/server.tsx
+```tsx:src/server.tsx
+import type {} from "react/canary";
 import { Readable, PassThrough } from "stream";
 import { writeFile } from "fs/promises";
-import ReactDOM from "react-dom/server";
 // @ts-expect-error
 import rsdws from "react-server-dom-webpack/server";
 const { renderToPipeableStream } = rsdws;
-// @ts-expect-error
-import rsdwc from "react-server-dom-webpack/client";
-const { createFromReadableStream } = rsdwc;
 
 import { App } from "./app/server/App.js";
 import { bundlerConfig } from "./app/server/Client.js";
-// @ts-expect-error
-import { use } from "react";
 
-const [stream1, stream2] = Readable.toWeb(
+const stream = Readable.toWeb(
   renderToPipeableStream(<App />, bundlerConfig).pipe(new PassThrough())
-).tee();
-
-class ClientComponentError extends Error {}
-
-const chunk = createFromReadableStream(stream1);
-// @ts-expect-error
-globalThis.__webpack_require__ = async () => {
-  throw new ClientComponentError("Client Component");
-};
-
-const Container = () => {
-  return use(chunk);
-};
+);
 
 renderHTML().then(async (html) => {
   await writeFile("./index.html", html);
@@ -364,26 +176,11 @@ async function renderHTML() {
     <meta charset="utf-8" />
   </head>
   <body>
-    <div id="app">`;
-
-  const htmlStream = ReactDOM.renderToPipeableStream(<Container />, {
-    onError(error) {
-      if (error instanceof ClientComponentError) {
-        // 握りつぶす
-        return;
-      }
-      console.error(error);
-    },
-  }).pipe(new PassThrough());
-  for await (const chunk of htmlStream) {
-    result += chunk;
-  }
-
-  result += `</div>
-    <script id="ssr-data" type="text/plain" data-data="`;
+    <div id="app"></div>
+    <script id="rsc-data" type="text/plain" data-data="`;
 
   const decoder = new TextDecoder("utf-8");
-  for await (const chunk of stream2) {
+  for await (const chunk of stream) {
     result += escapeHTML(decoder.decode(chunk));
   }
 
@@ -407,42 +204,38 @@ function escapeHTML(str: string) {
 }
 ```
 
-:::
+こんな感じでscript要素にRSCプロトコルの文字列を突っ込みましょう。ちなみに、`script`の中身ではなく`data-data`属性に出力しているのは、そちらの方がエスケープ処理が楽だからです。出力されるHTMLはこんな具合です。
 
-こんな感じでscript要素にRSCプロトコルの文字列を突っ込みましょう。ちなみに、`script`の中身ではなく`data-data`属性に出力しているのは、そちらの方がエスケープ処理が楽だからです。
-
-```diff html
- <!DOCTYPE html>
- <html lang="en">
-   <head>
-     <meta charset="utf-8" />
-   </head>
-   <body>
-     <div id="app"><div><h1>React Server Components example</h1><p>Hello, world!</p><!--$!--><template data-msg="Client Component" data-stck="
-     at Container (file:///Users/uhyo/private/rsc-without-nextjs/dist/server.js:24:12)"></template><p>Loading...</p><!--/$--></div></div>
-+    <script id="ssr-data" type="text/plain" data-data="S1:&quot;react.suspense&quot;
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script id="rsc-data" type="text/plain" data-data="S1:&quot;react.suspense&quot;
 +M2:{&quot;id&quot;:&quot;__mod__&quot;,&quot;name&quot;:&quot;Clock&quot;,&quot;chunks&quot;:[],&quot;async&quot;:true}
 +J0:[&quot;$&quot;,&quot;div&quot;,null,{&quot;children&quot;:[[&quot;$&quot;,&quot;h1&quot;,null,{&quot;children&quot;:&quot;React Server Components example&quot;}],[[&quot;$&quot;,&quot;p&quot;,null,{&quot;children&quot;:&quot;Hello, world!&quot;}],[&quot;$&quot;,&quot;$1&quot;,null,{&quot;fallback&quot;:[&quot;$&quot;,&quot;p&quot;,null,{&quot;children&quot;:&quot;Loading...&quot;}],&quot;children&quot;:[&quot;$&quot;,&quot;@2&quot;,null,{}]}]]]}]
 +"></script>
-     <script type="module" src="src/client.tsx"></script>
-   </body>
- </html>
+    <script type="module" src="src/client.tsx"></script>
+  </body>
+</html>
 ```
 
 ## クライアントサイドの実装
 
-さて、上で出力されたHTMLの下から3行目を見ると分かるように、クライアント側の実装は出力されたHTMLをViteに食わせることでやってしまおうという魂胆です。まずサーバーをビルド→次にクライアントをViteでビルドという流れですね。もう少し整えることもできますが、今回はハンズオンなのでこれくらいで勘弁してください。ということで、`src/client.tsx`を実装します。実装できる自信のある方は自分で実装してみてもいいかもしれません。
+さて、上で出力されたHTMLの下から3行目を見ると分かるように、`.ts`ファイルを直接script要素に与えています。これは、クライアント側の実装は出力されたHTMLをViteに食わせることでやってしまおうという魂胆です。まずサーバーをビルド→次にクライアントをViteでビルドという流れですね。もう少し整えることもできますが、今回はハンズオンなのでこれくらいで勘弁してください。ということで、`src/client.tsx`を実装します。実装できる自信のある方は自分で実装してみてもいいかもしれません。
 
 ```tsx:src/client.tsx
 // @ts-expect-error
 import { createFromReadableStream } from "react-server-dom-webpack/client";
-// @ts-expect-error
 import { use } from "react";
-import { hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { Clock } from "./app/client/Clock.js";
 
 const app = document.getElementById("app");
-const ssrData = document.getElementById("ssr-data")?.getAttribute("data-data");
+const ssrData = document.getElementById("rsc-data")?.getAttribute("data-data");
 
 if (app === null) {
   throw new Error("Root element does not exist");
@@ -476,23 +269,25 @@ globalThis.__webpack_require__ = async () => {
   return allClientComponents;
 };
 
-const Container = () => {
+const Container: React.FC = () => {
   return use(chunk);
 };
 
-hydrateRoot(app, <Container />);
+createRoot(app).render(<Container />);
 ```
 
-一つ目のポイントは、`<script id="ssr-data">`の`data-data`属性から取得した文字列を`ReadableStream`にして`ssrDataStream`として`createFromReadableStream`に渡していることです。前と同じく`fetch`を経由してもよかったのですが、WHATWG Streamの練習にはちょうどいい課題なのでやってみました。
+一つ目のポイントは、`<script id="rsc-data">`の`data-data`属性から取得した文字列を`ReadableStream`にして`ssrDataStream`として`createFromReadableStream`に渡していることです。前と同じく`fetch`を経由してもよかったのですが、WHATWG Streamの練習にはちょうどいい課題なのでやってみました。
 
 もう一つのポイントは`__webpack_require__`の実装です。今回は面倒なのでチャンク分割などは実装していませんので、全てのクライアント向けコンポーネントを含んだ`allClientComponents`オブジェクトをあらかじめ用意しておき、それを返す実装になっています。ちなみに、今回はサーバー側でモジュールのメタデータを`chunks: []`としていますのでチャンク読み込みが発生しません。そのため、`__webpack_chunk_load__`の実装は必要ありません。
 
-以上の実装でViteを実行すれば、アプリが正常に動作していることが確かめられるはずです。HTMLに埋め込まれたRSCプロトコルの文字列をもとにクライアントでのレンダリングとhydrationが行われます。
+これを実際に実行してみるには、まずサーバー側（`src/server.ts`）を実行します（サンプルリポジトリでは、`npm run build`の後に`npm start`）。そうしたら、`index.html`が出力されてそれがViteのエントリーポイントとなるので、`npm run vite`でViteを実行すれば結果が確認できます。
+
+Viteを実行すると、アプリが正常に動作していることが確かめられるはずです。HTMLに埋め込まれたRSCプロトコルの文字列をもとにクライアントでのレンダリングが行われます。
 
 このアプリでは、サーバーサイドのコンポーネント（`App`や`Page`）はクライアントに送られていない一方、クライアントサイドのコンポーネント（`Clock`）の実装はサーバーサイドは関知していません。つまり、1つのアプリを2か所で分担してレンダリングするということが達成できていますね。
 
-成果物としては、従来のフレームワーク無しSSRにRSCを使ってみたという感じになりました。
+以上が、RSCを用いた最も基本的なサーバーとクライアントの統合方法です。ここではサーバー側の出力がRSCプロトコルでありHTMLをサーバー側で生成していないので、SSRをせずにRSCを用いたことになります。
 
-ここまでの実装が`step5-3`ブランチにあります。
+ここまでの実装が`step5-2`ブランチにあります。
 
-最後に、次の章でサーバーサイドでRSCの威力をもうちょっと実感して終わりにしましょう。
+次の章では、RSCとSSRの併用を試してみます。

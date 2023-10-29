@@ -10,5 +10,7 @@ chapters:
   - client-component
   - client-rendering
   - unified-app
+  - ssr
   - async
+  - streaming-ssr
   - conclusion

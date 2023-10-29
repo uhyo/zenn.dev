@@ -4,22 +4,21 @@ title: "とりあえずサーバー用パッケージを動かしてみる"
 
 まず手始めに、とりあえずReact Server Componentsを動かすのに必要なパッケージをインストールして使ってみましょう。この章の開始時の内容に対応するコードはリポジトリの`step1`ブランチにあります。
 
-`package.json`の内容を抜粋するとこんな感じです。React関連のパッケージは、RSCがまだ正式リリースされていないので`experimental`なものをインストールする必要があります。
+`package.json`の内容を抜粋するとこんな感じです。React関連のパッケージは、RSCがまだCanaryチャンネルでの提供なので`canary`なものをインストールする必要があります。
 
 ```ts
   "devDependencies": {
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.9",
-    "prettier": "^2.8.0",
-    "react": "^0.0.0-experimental-2655c9354-20221121",
-    "react-dom": "^0.0.0-experimental-2655c9354-20221121",
-    "react-server-dom-webpack": "^0.0.0-experimental-2655c9354-20221121",
-    "typescript": "^4.9.3",
-    "webpack": "^5.75.0"
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
+    "prettier": "^3.0.3",
+    "react": "^18.3.0-canary-8039e6d0b-20231026",
+    "react-dom": "^18.3.0-canary-8039e6d0b-20231026",
+    "react-server-dom-webpack": "^18.3.0-canary-8039e6d0b-20231026",
+    "typescript": "^5.2.2"
   }
 ```
 
-明らかに浮いているのが`react-server-dom-webpack`ですね。何か名前に`webpack`と入っていて浮いていますが、今は気にしません（RSCの実用上モジュールごとにServer ComponentになったりClient Componentになったりするため、バンドラ側の協力が必要となっています）。`webpack`も入っていますがこれはpeer dependencyの都合です。
+明らかに浮いているのが`react-server-dom-webpack`ですね。何か名前に`webpack`と入っていて浮いていますが、今は気にしません（RSCの実用上モジュールごとにServer ComponentになったりClient Componentになったりするため、バンドラ側の協力が必要となっています）。この本の執筆時点では他に`react-server-dom-esm`というwebpackに依存しなそうなパッケージも作られていますが、まだCanaryになっておらず安定性が低そうなので今回は見送りました。
 
 ## コンポーネントを用意する
 
@@ -38,7 +37,7 @@ export const App: React.FC = () => {
 
 ## コンポーネントをレンダリングしてみる
 
-サーバー（Node.js）向けのReactレンダリングAPIとしては`renderToPipeableStream`が`react-dom/server`から提供されているのが知られていますが、今回はRSC対応のために、`react-server-dom-webpack`から提供されているものを使います。
+サーバー（Node.js）向けのReactレンダリングAPIとしては`renderToPipeableStream`が`react-dom/server`から提供されているのが知られていますが、今回はRSC対応のために、`react-server-dom-webpack/server`から提供されているものを使います。
 
 具体的なコードはこうです（1行目の`@ts-expect-error`は`react-server-dom-webpack`の型定義が存在していないため必要です）。
 
@@ -52,7 +51,7 @@ import { App } from "./app/App.js";
 renderToPipeableStream(<App />).pipe(process.stdout);
 ```
 
-これをJSにコンパイルしてからnodeで実行します。ただし、[RFC: React Server Module Conventions v2](https://github.com/reactjs/rfcs/pull/227)で説明されているように、このコードを実行するには`node --conditions react-server`というオプションを渡す必要があります。
+これをJSにコンパイルしてからnodeで実行します。ただし、[RFC: React Server Module Conventions v2](https://github.com/reactjs/rfcs/pull/227)で説明されているように、このコードを実行するには`node --conditions react-server`というオプションを渡す必要があります（サンプルリポジトリでは`npm start`で実行できます）。
 
 実行すると、次のように出力されます。
 

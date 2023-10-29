@@ -42,10 +42,10 @@ J0:["$","div",null,{"children":[["$","h1",null,{"children":"React Server Compone
 
 ## クライアントの実装
 
-とりあえず、動作するクライアントサイドの実装を一気にお見せします。サンプルリポジトリではViteをセットアップしてコードを動かしています（`step4`ブランチを参照してください）。
+とりあえず、動作するクライアントサイドの実装を一気にお見せします。サンプルリポジトリではViteをセットアップしてコードを動かしています（`step4`ブランチを参照してください）。`npm run vite`で動作を確かめることができます。
 
 ```tsx:src/client.tsx
-// @ts-expect-error
+import type {} from "react/canary";
 import React, { use } from "react";
 import ReactDOM from "react-dom/client";
 // @ts-expect-error
@@ -91,7 +91,9 @@ ReactDOM.createRoot(root).render(<Container />);
 
 この`createFromFetch`というのは`fetch`の結果のPromiseを渡すことで`Chunk`というオブジェクトを返します。このオブジェクトは（実際には）サーバーからRSCプロトコルでストリーミングされてくるデータをいい感じに処理してレンダリングすることを担当してくれます。今回は面倒なのでサーバーからのデータはハードコードしてしまっています。
 
-実はこのChunkオブジェクトはPromiseを継承しています。RSC時代のReactでは、Promiseの中身を取り出したい場合は`use`を使うのでしたね。ということで、上のコードでは`createFromFetch`の結果を`use`として表示するだけの`Container`コンポーネントを作ってレンダリングしています。これでRSCプロトコルで送られてきたツリーをレンダリングすることができます。
+実はこのChunkオブジェクトはPromiseを継承しています。React CanaryにはすでにPromiseの中身を取り出せる`use`が入っているので、これを使いましょう。ということで、上のコードでは`createFromFetch`の結果を`use`として表示するだけの`Container`コンポーネントを作ってレンダリングしています。これでRSCプロトコルで送られてきたツリーをレンダリングすることができます。
+
+ちなみに、`use`で`chunk`の中身を取り出した結果は、型でいえば`ReactElement`に相当するものです。つまり、JSXの結果（`<div ... />`といった式が評価された結果）と同等のものです。よって、ここでの`chunk`の中身は「サーバー側でレンダリングされたJSX」と表現するのが妥当でしょう。
 
 ## モジュールの読み込み
 
