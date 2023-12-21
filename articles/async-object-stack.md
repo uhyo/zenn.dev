@@ -270,7 +270,7 @@ export class Logger {
 
 https://github.com/uhyo/async-object-stack/tree/main/examples/logger
 
-このように`AsyncObjectStack`インスタンスを隠すことは、メタデータの追加の仕方を統一できるという利点があります。自分で`render()`を呼び出してロガーに渡すインターフェースだと、`render()`後にちょっとメタデータをそのまで追加するようなやり方が可能になり、複数の異なるやり方が生まれてしまいます。
+このように`AsyncObjectStack`インスタンスを隠すことは、メタデータの追加の仕方を統一できるという利点があります。自分で`render()`を呼び出してロガーに渡すインターフェースだと、`render()`後にちょっとメタデータをその場で追加するようなやり方が可能になり、複数の異なるやり方が生まれてしまいます。
 
 ```js
 // stack.pushを使ってほしいのに……
