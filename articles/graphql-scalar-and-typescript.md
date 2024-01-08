@@ -222,7 +222,7 @@ ID:
 
 https://github.com/Urigo/graphql-scalars/blob/3f0aa62abc48073cf398d6a4514ef84b345b904e/src/scalars/iso-date/DateTime.ts
 
-JavaScriptにおけるカスタムスカラーの実装は`GraphQLScalarType`のインスタンスのことであり、スキーマ上でカスタムスカラーを定義することに加えて、これをGraphQLサーバーに読み込ませることでカスタムスカラーが使用可能になります。`GraphQLScalarType`インスタンスは、値のシリアライズとデシリアライズを担当します。
+JavaScriptにおけるカスタムスカラーの実装は`GraphQLScalarType`のインスタンスのことであり、スキーマ上でカスタムスカラーを定義することに加えて、これをGraphQLサーバーに読み込ませることでカスタムスカラーが使用可能になります。`GraphQLScalarType`インスタンスは、値のシリアライズとデシリアライズを担当します（より正確には、Result CoercionとInput Coercionという言い方が正確ですが）。
 
 よって、値が何にシリアライズされ、何にデシリアライズされるのかが分かれば、TypeScriptにおけるマッピングを決めることができますね。
 
