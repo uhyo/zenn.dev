@@ -1,7 +1,7 @@
 title: "React 19の新機能まるわかり"
 summary: "2024年4月にリリースされたReact 19 Betaの新機能について、細かい点やポイントを解説します。"
 topics: ["react"]
-published: false
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
