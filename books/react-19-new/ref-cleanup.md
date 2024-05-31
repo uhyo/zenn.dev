@@ -53,7 +53,7 @@ const MyComponent: React.FC = () => {
   const [count, setCount] = useState(0);
   return (
     <div ref={(node) => {
-      console.log(code, node);
+      console.log(count, node);
     }}>
       <button onClick={() => setCount(c => c + 1)}>Increment</button>
     </div>
