@@ -221,7 +221,7 @@ formの`action`に渡されたアクションが引数として`FormData`を受�
 
 ### formとuseActionStateの関係
 
-Server Actionの機能は限定されています。サーバー側で実行されるため、クライアント側の状態に関与することはできません。少し上で、formの`action`に渡した非同期関数の中で`setCount`している例がありましｔが、あれはServer Actionではないからできることです。
+Server Actionの機能は限定されています。サーバー側で実行されるため、クライアント側の状態に関与することはできません。少し上で、formの`action`に渡した非同期関数の中で`setCount`している例がありましたが、あれはServer Actionではないからできることです。
 
 しかし、Server Actionから返り値を得ることはできるはずです。実は、このことと、前述のハイドレーション前の送信のサポートを両立するという役割を担っているのが`useActionState`です。
 
