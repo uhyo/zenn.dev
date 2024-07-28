@@ -3,7 +3,7 @@ title: "TypeScriptの標準ライブラリで使われているdeclaration mergi
 emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["typescript"]
-published: false
+published: true
 ---
 
 TypeScriptの標準ライブラリとは、TypeScriptに組み込みで備わっている型定義のことです。ECMAScript仕様で定義されているJavaScriptの言語機能に対する型定義が含まれています。また、ブラウザに組み込まれているWeb標準のAPIに対する型定義も含まれています。
