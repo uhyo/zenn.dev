@@ -90,7 +90,7 @@ function timestampedAtom<T>(atom: Atom<T>): Atom<Timestamped<T>> {
   return atom((get) => {
     return {
       data: get(atom),
-      timestamp: Date.now(),
+      timestamp: performance.now(),
     };
   });
 }
