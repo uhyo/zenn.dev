@@ -49,7 +49,9 @@ const [isChecked, setIsChecked] = useState(apiData.isChecked);
 
 一般に、良くないuseEffectの使い方の解消法として、useEffectの処理をイベントハンドラに移動するという方法があります。これも似たような解消法だと考えられます。
 
-しかし、このような方法が取れない場合もあるでしょう。例えば、[TanStack Query](https://tanstack.com/query/latest)を使っていて`onSuccess`のようなAPIが無い場合とか、実際には`apiData`と`isChecked`の定義が別々の場所にあり、`useApiData`から`setIsChecked`を参照するのは難しい場合とかです。
+しかし、この方法には不安点があります。「`apiData`が変わるステート更新」と、「`onSuccess`内の`setIsChecked`」が同時に行われないと、1回のレンダリングで変化してくれず、useEffectと同じ問題が残ってしまいます。そうなっているかどうかは`useApiData`の内部実装次第であり、気持ち悪さがあります。
+
+また、このような方法が取れない場合もあるでしょう。例えば、[TanStack Query](https://tanstack.com/query/latest)を使っていて`onSuccess`のようなAPIが無い場合とか、実際には`apiData`と`isChecked`の定義が別々の場所にあり、`useApiData`から`setIsChecked`を参照するのは難しい場合とかです。
 
 ## タイムスタンプによるステート管理
 
