@@ -16,7 +16,7 @@ _くもゐにてなほせる花はやまかはにかへりてつねに土にさ�
 
 Prettierのフォーマッターの分野での対抗馬となっているBiomeのことを詠んだ歌。同じくPrettierが登場する歌である「[くもゐにてなほせる花ぞうるはしき人のたゆらに色を思はく](https://zenn.dev/uhyo/articles/frontend-poem)」を背景とした歌であり、初2句をほぼそのまま採り入れている。
 
-「[くもゐ](https://kobun.weblio.jp/content/%E3%82%84%E3%81%BE%E3%81%8B%E3%81%AF)にてなほせる花」とは、本歌と同じくPrettierによってフォーマットされたコードを指している。「花」が帰る先である「[やまかは](https://kobun.weblio.jp/content/%E3%82%84%E3%81%BE%E3%81%8B%E3%81%AF)」はBiomeを指しており、これまでPrettierがフォーマットしていたコードをBiomeがフォーマットするようになるという変遷を表現している。
+「[くもゐ](https://kobun.weblio.jp/content/%E3%81%8F%E3%82%82%E3%82%90)にてなほせる花」とは、本歌と同じくPrettierによってフォーマットされたコードを指している。「花」が帰る先である「[やまかは](https://kobun.weblio.jp/content/%E3%82%84%E3%81%BE%E3%81%8B%E3%81%AF)」はBiomeを指しており、これまでPrettierがフォーマットしていたコードをBiomeがフォーマットするようになるという変遷を表現している。
 
 「[つねに](https://kobun.weblio.jp/content/%E3%81%A4%E3%81%AD%E3%81%AA%E3%82%8A)」とは普通、当たり前という意味であり、「土に[さかえ](https://kobun.weblio.jp/content/%E3%81%95%E3%81%8B%E3%82%86)む」として「花」の隆盛を表現していることから、PrettierからBiomeへの移行をあるべき姿、よいこととして肯定的に読んだ歌と解釈される。
 
