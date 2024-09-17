@@ -44,7 +44,7 @@ Google Chromeの開発者ツールで調べると、次の画像のような情�
 
 この画像から分かるように、input要素のアクセシブルな名前は確かに`aria-labelledby`に従っています。しかも、aria-labelには打消し線が引いてあり、その値が採用されていないことが示されています。
 
-仕様書に書かれているように、`aria-label`と`aria-labelledby`を同じ要素に対してした場合は`aria-labelledby`が採用され、`aria-label`の値が使われないことが確かめられました。
+MDNに書かれているように、`aria-label`と`aria-labelledby`を同じ要素に対してした場合は`aria-labelledby`が採用され、`aria-label`の値が使われないことが確かめられました。
 
 ## React Ariaさん！？
 
@@ -133,7 +133,8 @@ W3C Working Draft 02 August 2024](https://www.w3.org/TR/accname-1.2/)です。
 > 2. 各IDREFについて:
 >    1. IDREFで参照されるノードをcurrent nodeに設定する。
 >    2. LabelledBy Recursion: current nodeの代替テキストを計算する（Computationステップから行う）。resultを計算された代替テキストとする。
->    3. accumulated textが空文字列でなければ、それを返す。
+>    3. accumulated textにスペース文字とresultを追加する。
+>  3. accumulated textが空文字列でなければ、それを返す。
 
 特に2-2の部分で、`aria-labelledby`で指定された要素に対してラベルを計算する再帰的な処理があります（Computationステップというものが言及されていますが、これは計算処理全体を指すものです）。
 
@@ -142,6 +143,10 @@ W3C Working Draft 02 August 2024](https://www.w3.org/TR/accname-1.2/)です。
 詳細は省きますが、アルゴリズムには上の*LabelledBy*という分岐の次に、input要素（など）の入力値を使用する*Embedded Control*ステップ、そしてその次に`aria-label`を参照する*AriaLabel*分岐が続きます。よって、再帰してきて*LabelledBy*分岐に入れなかった場合、そのあとの*AriaLabel*分岐に入って`aria-label`の値が使われることになります。
 
 以上のことから、`aria-labelledby`で自分自身のIDを指定した場合には自身の`aria-label`の値が使われるという挙動が仕様に沿ったものであることが分かりました。
+
+余談ですが、このアルゴリズムで`aria-labelledby`の処理が`aria-label`よりも先に来ていることにより、`aria-label`よりも`aria-labelledby`が優先されるということが示されています。よく見ると3で「accumulated textが空文字列でなければ、それを返す」とありますから、`aria-labelledby`のルールに従って計算しても空文字列しか得られなかった場合は、`aria-label`のほうが使われることになります。
+
+フォールバックとしてはありかもしれませんが、普通は`aria-labelledby`でわざわざIDを指定する以上はそのIDが指す要素に適切なラベルがあるでしょうから、この挙動を活用することはあまり無さそうです。
 
 ## まとめ
 
