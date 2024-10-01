@@ -91,6 +91,8 @@ TypeScript側から見ると、これは方針に十分な影響を与える変�
 
 こうした状況を受けて、TypeScriptに`--rewriteRelativeImportExtensions`オプションが追加される運びとなりました。2種類の異なるモジュール解決をするランタイム（`--experimental-strip-types`ありのNode.jsと無しのNode.js）に対応するためには、どちらかを基準として、ビルド時に拡張子の書き換えをするしかありません。`--experimental-strip-types`のユースケースとしてビルドしないことが想定されるので、TypeScriptコード上は`.ts`として、`tsc`でのビルド時に`.js`に書き換えるのが自然です。
 
+`--rewriteRelativeImportExtensions`オプションを使うと、この拡張子の書き換えをTypeScriptのトランスパイル時に行うことができます。
+
 ```ts
 import { foo } from './foo.ts'; // ← .tsでimport
 
