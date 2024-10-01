@@ -223,7 +223,7 @@ https://x.com/SeaRyanC/status/1840922680725553237?conversation=none
 :::details 画像の代替テキスト
 画像は上下に分かれています。上半分にはマットの上に立つ3人の女性が描かれており、「Write the path that works at runtime」とキャプションが付けられています。
 
-下半分には5人の人間が描かれており、鉄棒、台、火が付いた車を使った体操のようなパフォーマンスをしています。こちらには「Write the wrong path, then turn on a flag to use a regex, then learn when the regex applies, then the regex makes the path right again. Separately learn if "await import" acts like static import or readFile」というキャプションが付けられています。
+下半分には6人の人間が描かれており、鉄棒、台、火が付いた車を使った、体操のように見える曲芸的なパフォーマンスをしています。こちらには「Write the wrong path, then turn on a flag to use a regex, then learn when the regex applies, then the regex makes the path right again. Separately learn if "await import" acts like static import or readFile」というキャプションが付けられています。
 :::
 
 この画像は、`--rewriteRelativeImportExtensions`オプションを使うことで物事をむやみに複雑にしてしまうことを揶揄しています。
