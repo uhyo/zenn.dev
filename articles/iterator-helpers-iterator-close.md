@@ -6,7 +6,7 @@ topics: ["javascript", "ecmascript"]
 published: true
 ---
 
-2024年10月のTC39ミーティングでは、[Iterator Helpers](https://github.com/tc39/proposal-iterator-helpers)がStage 4となり、ECMAScriptの仕様に追加されることが決定されました。Iterator HelpersはすでにGoogle Chromeなどで試すことができます。
+2024年10月のTC39ミーティングでは、[Iterator Helpers](https://github.com/tc39/proposal-iterator-helpers)がStage 4となり、ECMAScriptの仕様に追加されることが決定しました。Iterator HelpersはすでにGoogle Chromeなどで試すことができます。
 
 Iterator Helpersは概してわかりやすい機能群ではありますが、やはり元々がJavaScriptということで、直観的には理解しがたい挙動もあります。そのような挙動は、とくにイテレータを分岐させたときに見られます。
 
@@ -208,7 +208,7 @@ sub2から最初に値を取り出そうとしたときに、親（iter）から
 
 ## ジェネレータとIterator Helpers
 
-……と言いたいところですが、実はこの記事はここからが本題です。JavaScriptにはイテレータと密接に関わる**ジェネレータ**という機能があります。ジェネレータは、自前のイテレータで実装するための機能です。ジェネレータについても調べないとJavaScriptのイテレータを真に理解したとは言えません。
+……と言いたいところですが、実はこの記事はここからが本題です。JavaScriptにはイテレータと密接に関わる**ジェネレータ**という機能があります。ジェネレータは、自前のイテレータを関数で実装するための機能です。ジェネレータについても調べないとJavaScriptのイテレータを真に理解したとは言えません。
 
 まず、ジェネレータ関数を使って無限イテレータを作ってみます。
 
