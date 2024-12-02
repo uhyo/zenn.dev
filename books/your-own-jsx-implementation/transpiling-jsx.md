@@ -4,6 +4,8 @@ title: "JSXのトランスパイル"
 
 皆さんこんにちは。このZenn本は、[N代アドベントカレンダー2024](https://adventar.org/calendars/10235)の3日目の記事（？）です。この本では、タイトルにあるように、TypeScriptで自前のJSX実装を作るための知識を紹介します。古い知識は省きつつも、2024年12月現在で必要な知識は全て揃うようにしました。
 
+https://adventar.org/calendars/10235
+
 **JSX**はJavaScriptに対する拡張構文であり、主にReactなどのUIライブラリで使われています。
 
 ```jsx:JSXの例
