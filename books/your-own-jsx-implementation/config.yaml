@@ -1,7 +1,7 @@
 title: "自前のJSX実装を作るために必要な全ての知識"
-summary: "JSX対応ライブラリをTypeScriptで作る方法を解説します。"
-topics: ["typescript"]
-published: false
+summary: "JSX対応ライブラリをTypeScriptで作る方法を解説します。古い知識は省きつつも、必要な知識を全てお伝えします。"
+topics: ["typescript", "jsx"]
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
@@ -12,4 +12,5 @@ chapters:
   - fragments
   - jsx-runtime-2
   - jsx-components-2
+  - jsx-types-2
   - summary

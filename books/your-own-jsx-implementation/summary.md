@@ -67,9 +67,10 @@ export async function render(renderable: Renderable): Promise<string> {
     return "";
   }
   const { tag, props } = renderable;
+  const repeat = typeof props.repeat === "number" ? props.repeat : 1;
 
   if (typeof tag === "function") {
-    return render(await tag(props));
+    return (await render(await tag(props))).repeat(repeat);
   }
 
   const { children, ...rest } = props;
@@ -77,7 +78,7 @@ export async function render(renderable: Renderable): Promise<string> {
     .map(([key, value]) => ` ${key}="${value}"`)
     .join("");
   const innerHTML = await render(children as Renderable);
-  return `<${tag}${attributes}>${innerHTML}</${tag}>`;
+  return `<${tag}${attributes}>${innerHTML}</${tag}>`.repeat(repeat);
 }
 
 export function Fragment({ children }: { children?: Renderable }): Renderable {
@@ -92,16 +93,20 @@ import type {
   FunctionComponentResult,
 } from "./jsx-runtime";
 
-interface HasChildren {
+interface PropsForAnyJSXElement {
+  repeat?: number;
+}
+
+interface PropsForAnyIntrinsicElement extends PropsForAnyJSXElement {
   children?: Renderable;
 }
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      div: HasChildren;
-      h1: HasChildren & { id?: string };
-      p: HasChildren;
+      div: PropsForAnyIntrinsicElement;
+      h1: PropsForAnyIntrinsicElement & { id?: string };
+      p: PropsForAnyIntrinsicElement;
     }
 
     type Element = MyJSXElement;
@@ -111,6 +116,8 @@ declare global {
     interface ElementChildrenAttribute {
       children: unknown;
     }
+
+    type LibraryManagedAttributes<_F, P> = P & PropsForAnyIntrinsicElement;
   }
 }
 ```
@@ -118,18 +125,18 @@ declare global {
 ```tsx:src/index.tsx
 import { render } from "#my-jsx/jsx-runtime";
 
-const Title = async (props: { text: string }) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+const Title = (props: { text: string }) => {
   return <h1>{props.text}</h1>;
 };
 
 const element = (
-  <div>
+  <div repeat={3}>
     <Title text="Hello, world!" />
     <p>Goodbye, world!</p>
   </div>
 );
 
 console.log(await render(element));
+
 ```
 
