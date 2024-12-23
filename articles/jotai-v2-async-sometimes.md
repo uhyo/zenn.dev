@@ -190,7 +190,7 @@ export const checksAtom = atom(
 );
 ```
 
-もともと`checksAtom`は`WritableAtom<Set<Promise>, ...>`型だったのですが（`...`部分は省略）、このように変更することで、`checksAtom`は`WritableAtom<Set<string> | Promise<Set<string>>, ...>`型になります。つまり、中身がPromiseかもしれないしそうではないかもしれないということで、言い換えれば中身が同期的に取得できるかもしれないし、非同期的に取得できるかもしれないということです。
+もともと`checksAtom`は`WritableAtom<Set<string>, ...>`型だったのですが（`...`部分は省略）、このように変更することで、`checksAtom`は`WritableAtom<Set<string> | Promise<Set<string>>, ...>`型になります。つまり、中身がPromiseかもしれないしそうではないかもしれないということで、言い換えれば中身が同期的に取得できるかもしれないし、非同期的に取得できるかもしれないということです。
 
 中身を見ると、まず`checksAtom`の中身を計算する関数がasync関数ではなくなっています。これにより、`checksAtom`は同期的に計算できる場合は同期的に計算されるようになります。同期的には計算できない場合、具体的には初期状態の場合のみ、値がPromiseになります。
 
