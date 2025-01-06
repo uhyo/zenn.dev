@@ -154,9 +154,9 @@ label要素の挙動は、（for属性が無い場合は）label要素がクリ�
 
 button要素はinteractive contentに該当するので、「button要素の中のspanをクリックした場合」はこのケースに該当します。このため、通常であればlabel要素のactivation behaviorは何もしないはずです。
 
-仕様では、この判定（イベントのターゲットがinteractive contentかどうか）をいつ行うのかについて、仕様では明記されていません。
+仕様では、この判定（イベントのターゲットがinteractive contentかどうか）をいつ行うのかについて明記されていないようです。
 
-ブラウザの実装を確認したわけではないので推測ですが、activation behaviorが起動したタイミングで判定も行われていると考えられます。Activation behaviorの起動タイミングは、[仕様で定義されているように](https://dom.spec.whatwg.org/#dispatching-events)、イベントバブリングが全部完了した最後です[^preventDefault]。これであれば、上述の通り判定時にはすでにターゲットのspan要素はDOMツリーから外れているため、activation behaviorはbutton要素のclickイベントを発火してしまうという挙動になりますね。
+ブラウザの実装を確認したわけではないので推測ですが、activation behaviorが起動したタイミングで判定も行われていると考えられます。Activation behaviorの起動タイミングは、[仕様で定義されているように](https://dom.spec.whatwg.org/#dispatching-events)、イベントバブリングが全部完了した後です[^preventDefault]。これであれば、上述の通り判定時にはすでにターゲットのspan要素はDOMツリーから外れているため、activation behaviorはbutton要素のclickイベントを発火してしまうという挙動になりますね。
 
 [^preventDefault]: イベントバブリングのどのタイミングで`preventDefault`を呼び出してもactivation behaviorをキャンセルできることを思い出しましょう。そうなると、イベントバブリング完了後でないといけませんね。
 
