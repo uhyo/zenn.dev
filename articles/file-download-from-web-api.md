@@ -145,7 +145,7 @@ https://github.com/jimmywarting/StreamSaver.js
 :::message
 ここで取り扱うFile System Access APIについては、Google Chromeに実装されているものの、[Firefox](https://github.com/mozilla/standards-positions/issues/154)および[Safari](https://github.com/WebKit/standards-positions/issues/28)からは反対されています。そのため、一応紹介しますが、このままではあまり将来性が無さそうな仕様であることに注意してください。
 
-また、File System APIを使う以降のサンプルはChromeでしか動作しません。
+また、File System Access APIを使う以降のサンプルはChromeでしか動作しません。
 :::
 
 具体的な実装はこのようになります。
