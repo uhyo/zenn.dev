@@ -51,9 +51,25 @@ document.querySelector('button').addEventListener('click', () => {
 
 ということで、この記事ではこの現象の原因を説明し、対策を紹介します。
 
+## 事前知識: label要素について
+
+一応、簡単にlabel要素について説明しておきます。label要素にはアクセシビリティ上の役割などもありますが、挙動に絞って説明すると、ラベルをクリックすると、そのラベルに紐づいたフォームコントロールがクリックされたことになるというものです。よく使われるのは`<input type="checkbox">`や`<input type="radio">`などとの組み合わせです。
+
+```html
+<label>
+  <input type="checkbox" name="lost"> Lost
+</label>
+```
+
+こうすると、「Lost」というテキストをクリックしても、チェックボックスがクリックされたことになります。
+
+冒頭の例ではlabel要素でbutton要素を囲んでいます。labelはbutton要素にも対応しているため、ラベルをクリックしてもbutton要素をクリックしたことになります。
+
 ## 2回clickイベントが発火する原因
 
-JavaScriptが動作した後のDOM構造は次のようになっています（p要素とdiv要素は今回関係ないので省略）。
+では、本題に入りましょう。
+
+冒頭の例で、JavaScriptが動作した後のDOM構造は次のようになっています（p要素とdiv要素は今回関係ないので省略）。
 
 ```html
 <label>
