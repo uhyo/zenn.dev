@@ -140,7 +140,7 @@ https://github.com/jimmywarting/StreamSaver.js
 
 ## File System APIを使う方法
 
-ところで、上記のライブラリのREADMEを見に行くと、今どきは[File System API](https://fs.spec.whatwg.org/)（およびその拡張である[File System Access API](https://wicg.github.io/file-system-access/)があるからこのライブラリは必要なくなっていくだろうと書かれています。ということで、File System APIを使う方法を見てみましょう。
+ところで、上記のライブラリのREADMEを見に行くと、今どきは[File System API](https://fs.spec.whatwg.org/)（およびその拡張である[File System Access API](https://wicg.github.io/file-system-access/)）があるからこのライブラリは必要なくなっていくだろうと書かれています。ということで、File System APIを使う方法を見てみましょう。
 
 :::message
 ここで取り扱うFile System Access APIについては、Google Chromeに実装されているものの、[Firefox](https://github.com/mozilla/standards-positions/issues/154)および[Safari](https://github.com/WebKit/standards-positions/issues/28)からは反対されています。そのため、一応紹介しますが、このままではあまり将来性が無さそうな仕様であることに注意してください。
