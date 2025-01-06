@@ -53,15 +53,13 @@ document.querySelector('button').addEventListener('click', () => {
 
 ## 2回clickイベントが発火する原因
 
-JavaScriptが動作した後のDOM構造は次のようになっています（p要素は今回関係ないので省略）。
+JavaScriptが動作した後のDOM構造は次のようになっています（p要素とdiv要素は今回関係ないので省略）。
 
 ```html
-<div>
 <label>
   ラベルのテスト
   <button type="button"><span>0</span></button>
 </label>
-</div>
 ```
 
 ![DOM構造を表す図。label要素の下にbutton要素、その下にspan要素、その下にテキストノードの0がある。](/images/label-button-onclick-twice/dom-tree-1.png)
@@ -69,7 +67,7 @@ JavaScriptが動作した後のDOM構造は次のようになっています（p
 
 2回clickイベントが発火するのは、button要素の中のspan要素の部分がクリックされたときです。デバッグしてみると、1回目のclickイベントはspan要素に対して発火しており、2回目のclickイベントはbutton要素に対して発火していることがわかります。
 
-ポイントは、**イベントバブリング**と**label要素の仕様**にあります。また、今回のサンプルでclickイベント時に**DOM書き換え**が行われていることも関係があります。
+ポイントは、**イベントバブリング**と**label要素の挙動**にあります。また、今回のサンプルでclickイベント時に**DOM書き換え**が行われていることも関係があります。
 
 まず、1回目のclickイベントはspan要素で発生します（言い換えれば、イベントの`target`はspan要素です）。そして、イベントバブリングによりその親のbutton要素でclickイベントのイベントハンドラが処理されます。
 
@@ -79,12 +77,10 @@ JavaScriptが動作した後のDOM構造は次のようになっています（p
 この時、DOM書き換えにより、DOMは次のように書き換えられます。
 
 ```html
-<div>
 <label>
   ラベルのテスト
   <button type="button"><span>1</span></button>
 </label>
-</div>
 ```
 
 特に、button要素の中身が`<span>1</span>`になりましたが、これはspan要素ごと新しく作られています。つまり、元の`<span>0</span>`のspan要素はDOMツリーから外されています。
