@@ -43,7 +43,7 @@ const Counter: React.FC = () => {
 
 上の例は`action`の使い方を示していますが、これまでの例に比べて雑な気がします。例えば`isPending`がありません。また、前回`setCount(count + 1)`は良くないよと言っていたわりに、上の例はそうなっています。
 
-これを解消するためには、前回紹介した`useActionState`と組み合わせるのが有効です。[useActionStateのドキュメント](https://react.dev/reference/react/useActionState)を見ても、formとの組み合わせが推奨されているように見えます。
+これを解消するためには、前回紹介した`useActionState`と組み合わせるのが有効です。[useActionStateのドキュメント](https://react.dev/reference/react/useActionState)を見ても、formとの組み合わせが特に推奨されています。
 
 ```tsx:useActionStateを用いる実装
 const Counter: React.FC = () => {
@@ -68,9 +68,13 @@ const Counter: React.FC = () => {
 }
 ```
 
-ちなみに、この場合で`action`に渡されているのは`useActionState`でラップ済みの`increment`関数です。これは非同期関数ではありませんが、Reactではこのような場合もサポートされているようです。
+前回、`useActionState`が返した関数（`increment`）は`startTransition`でラップして呼び出す必要があると説明しましたが、このように`<form>`の`action`に渡す場合はその必要がありません。なぜなら、`<form>`の`action`は自動的にトランジションとなるからです。つまり、このように`action`属性を介して使う場合は`startTransition`は必要ありません。
 
-ただ、`useActionState`を使う場合はステート管理が付属しますので、それが大げさな場合もあるでしょう。そのような場合には別のフックを使うのが有効です。
+そのため、最も単純な形ではこのように`increment`を直接`action`属性に渡しても問題ありません。
+
+つまるところ、Reactではアクションを呼び出す場合はトランジションを使う必要があり、その方法が「`startTransition`を使う」か「`<form>`の`action`属性を使う」の2種類あるということです。
+
+ただ、`isPending`が欲しいからという理由だけで`useActionState`を使うのが大げさな場合もあるでしょう。`useActionState`には自動的にステート管理が付属します。ステート管理は不要という場合には別のフックを使うのが有効です。
 
 ## useFormStatusと併用する
 

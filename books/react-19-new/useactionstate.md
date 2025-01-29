@@ -6,7 +6,7 @@ React 19では**useActionState**という新しいフックが導入されまし
 
 **useActionState**は、アクションを単に実行するだけでなく、**アクションの結果**を取り扱いたいときに便利なAPIです。
 
-ざっくり言えば、アクションを走らせることを担当する**useTransition**と、ステートを管理する**useReducer**を**合体**させたようなフックです。
+ざっくり言えば、**useActionState**は**useReducer**の**非同期版**のようなフックです。
 
 ## useActionStateのAPI
 
@@ -25,13 +25,15 @@ const [state, runAction, isPending] = useActionState(
 
 const handleClick = () => {
   // アクションの実行
-  runAction(payload);
+  startTransition(() => {
+    runAction(payload);
+  });
 };
 ```
 
 目につくのは、APIが全体的にuseReducerと似ていることでしょう。引数としてステートの初期値と、ステートの更新関数を受け取ります。更新関数も、「現在のステート」と「更新に使うペイロード」を受け取り、新しいステートを返すものとなっており、useReducerと同じです。
 
-違うところは、第1引数がアクションであり、非同期関数である点です。それに伴って、返り値に`isPending`が追加されています。これは`useTransition`の`isPending`と同じだと思って差支えないでしょう。
+違うところは、第1引数が非同期関数である点です。それに伴って、返り値に`isPending`が追加されています。これは`useTransition`の`isPending`とだいたい同じで、非同期関数が実行を開始すると`isPending`がtrueになり、実行を終了すると`isPending`が`falseになります。
 
 返り値に含まれる`runAction`というのは、アクションを実行する関数です。`useReducer`で言うところの`dispatch`に相当します。
 
@@ -39,7 +41,7 @@ const handleClick = () => {
 
 ## useActionStateの使い方とポイント
 
-例えば、前回のカウンターコンポーネントは`useState`と`useTransition`を使って書かれていましたが、`useActionState`を使うと1つにまとめられます。
+例えば、前回のカウンターコンポーネントは`useState`と`useTransition`を使って書かれていましたが、`useState`の代わりに`useActionState`を使うこともできます。
 
 :::details 前回の実装
 
@@ -84,7 +86,9 @@ const Counter: React.FC = () => {
   }, 0);
 
   const handleClick = () => {
-    increment();
+    startTransition(() => {
+      increment();
+    });
   };
 
   return (
@@ -102,9 +106,13 @@ const Counter: React.FC = () => {
 }
 ```
 
-簡単な例ですが、`useActionState`のうまい使い方が示されています。
+簡単な例ですが、`useActionState`の基本的な使い方が示されています。
 
-特に、**`useReducer`と似たフックである**ことは重要です。つまり、「現在のステート」と「操作」を受け取り、新しいステートを作るというパターンを意識すべきということです。
+注意点として、今回のコードでは`useTransition`は使っていないものの、依然として`startTransition`を使っています。React（18以降）では、`useTransition`を使って`startTransition`を得る方法の他に、Reactから直接`startTransition`をインポートして使うこともできます。このコードではこちらを想定しています。
+
+ここで`startTransition`を使う理由は、**`useActionState`が返した関数はトランジションの内部で呼ばなければならないから**です。このように`useActionState`が作ったアクション（今回は`increment`）を使う際は、まずトランジションを開始して、その中でアクションを呼び出しましょう。
+
+上の例からは`useActionState`が`useReducer`の非同期版であるということがよく分かります。「現在のステート」と「操作」を受け取り、新しいステートを作るというパターンになっていますね。
 
 上の例の場合、`useActionState`で返された関数は`increment()`のように引数無しで呼び出す設計となっており、`setCount(count + 1)`ではありません。これは、このアクションの利用者は「数字を1増やしたい」という意図でアクションを実行するのであって、「具体的な値を決めたい」という意図で使うべきではないということを示しています。
 
@@ -114,4 +122,4 @@ const Counter: React.FC = () => {
 
 ## まとめ
 
-`useActionState`は、アクションを実行するだけでなく、その結果を取り扱うためのフックです。`useTransition`と`useReducer`を合体させたようなAPIを持ち、非同期処理をトランジション化することができます。
+`useActionState`は、非同期アクションを実行するだけでなく、その結果を取り扱うためのフックです。`useReducer`の非同期版といえるAPIを持ちます。
