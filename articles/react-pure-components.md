@@ -3,7 +3,7 @@ title: "Reactコンポーネントが「純粋である」とはどういうこ�
 emoji: "💎"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["react"]
-published: false
+published: true
 ---
 
 Reactにおいては、コンポーネントは**純粋**であるべきだとされています。これはReactのルールの一部であり、ルールを守らずに非純粋なコンポーネントを作った場合、さまざまな不都合が発生する恐れがあります。
