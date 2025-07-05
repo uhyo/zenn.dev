@@ -308,11 +308,11 @@ function foo(): number | Promise<number> {
 }
 
 export async function main() {
-  foo(123);
+  foo();
 }
 ```
 
-この場合、`foo(123)`はPromiseかもしれないし、Promiseではないかもしれません。
+この場合、`foo()`はPromiseかもしれないし、Promiseではないかもしれません。
 
 この例に対しては、Biomeはlintエラーを検知しました。つまり、ユニオン型の一部としてPromiseの可能性があることを認識できているようです。
 
