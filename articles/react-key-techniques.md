@@ -121,7 +121,7 @@ Reactのデフォルトの挙動では、レンダリング前後で `<UserProfi
 …（以下あらゆるユーザーIDに対応）…
 ```
 
-最初の1行のコードは、意図としてはこういう風に、ユーザーによって違う`UserProfileForm`を出し分けることをしたいのです[^note_state_reset]。しかし実際には、あらゆるユーザーIDに対して`UserProfileForm`をベタ書きするのは不可能です。そのため、ソースコード上は`UserProfileForm`を1つだけ書き、`key`でインスタンスの違いを伝えることにしているのです。
+最初の1行のコードは、意図としてはこういう風に、各ユーザーに対してその人専用の`UserProfileForm`を出し分けることをしたいのです[^note_state_reset]。しかし実際には、あらゆるユーザーIDに対して`UserProfileForm`をベタ書きするのは不可能です。そのため、ソースコード上は`UserProfileForm`を1つだけ書き、`key`でインスタンスの違いを伝えることにしているのです。
 
 [^note_state_reset]: 余談ですが、実際にこう書いて`user.id`がaliceからbobに変わった場合、`UserProfileForm`のステートはリセットされます。JSX上で違う位置にあるため、2つの`UserProfileForm`は別のインスタンスとして扱われるからです。
 
