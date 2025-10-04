@@ -35,7 +35,7 @@ https://ja.react.dev/learn/you-might-not-need-an-effect
 ここでは、よくある例として「ユーザーのプロフィールページ」と、そこから呼び出される「プロフィール編集フォーム」を考えます。プロフィール編集フォームは、親コンポーネントから`user`オブジェクトをpropsとして受け取り、その情報を元にフォームの初期値を設定します。
 
 ```tsx
-const UserProfileForm = ({ user }: { user: User }) => {
+const UserProfileForm: React.FC<{ user: User }> = ({ user }) => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
 
