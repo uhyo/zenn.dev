@@ -2,7 +2,7 @@
 title: "小手先に見えるテクニックでも、実はReact的に考えられる"
 emoji: "🦔"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["react"]
+topics: ["react", "zennfes2025free"]
 published: true
 ---
 
