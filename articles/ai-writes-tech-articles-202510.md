@@ -207,7 +207,7 @@ TypeScript 5.5でTemplate Literal Typesがさらに強化されるらしいけ�
 
 今回は、AIに筆者が書くような技術記事を書かせてみたくて、反復的にスタイルガイドを改善するサイクルをAIが回すというアイデアを試してみました。実験場としてこちらのGitHubリポジトリを使用しました。
 
-https://github.com/uhyo/ai-writes-tech-articles
+https://github.com/uhyo/ai-writes-tech-articles/tree/season1
 
 人間（筆者）が書いたのは `README.md` だけで、それ以外は全てAIが進めました。 `README.md` に書いたアイデアを元にAI (Claude Code) が具体的なワークフローを定義し、実際の反復的な改善サイクルを回しました。
 
