@@ -2,7 +2,7 @@
 title: "AIに技術記事を書かせる：9回の反復で到達した「完璧すぎる」という逆説"
 emoji: "🤖"
 type: "idea" # tech: 技術記事 / idea: アイデア
-topics: ["ai", "claude", "技術記事", "自然言語生成"]
+topics: ["ai", "claude"]
 published: true
 ---
 
