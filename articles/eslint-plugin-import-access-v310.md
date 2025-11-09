@@ -118,9 +118,9 @@ import { internalHelper } from "./feature1/_internal/helpers"; // ✖ インポ�
 export const FooPage: React.FC = ...
 ```
 
-## ″メタ設定”のすすめ
+## “メタ設定”のすすめ
 
-このように便利な`packageDirectory`ですが、設定の書き方にはコツがあります。それは、**個別のディレクトリを列挙するのではなく、″ディレクトリ名のルール”を`packageDirectory`に記載すること**です。より端的に言えば、ワイルドカード（`*`や`**`）を活用するということです。
+このように便利な`packageDirectory`ですが、設定の書き方にはコツがあります。それは、**個別のディレクトリを列挙するのではなく、“ディレクトリ名のルール”を`packageDirectory`に記載すること**です。より端的に言えば、ワイルドカード（`*`や`**`）を活用するということです。
 
 例えば、いわゆるpackage by featureを採用しており`src/packages/foo`や`src/packages/bar`をパッケージとして扱いたいとしましょう。そのときは、`foo`や`bar`を個別に設定ファイルに明記するのは避け、代わりに`*`を使います。
 
