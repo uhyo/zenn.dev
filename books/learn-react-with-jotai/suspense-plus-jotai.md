@@ -214,3 +214,102 @@ const UserProfile: React.FC<{ userId: string }> = ({ userId }) => {
 自分でMapを使う場合も、`atomFamily`を使う場合も共通の注意点があります。それは**メモリ管理**です。jotaiは、atomの値をキャッシュします。そのため、atomを動的に生成してMapなどで保持している場合、そのatomが不要になってもMapから削除しない限りメモリに残り続けてしまい、atom本体に加えてキャッシュされた値も解放されません。
 
 そのため、大量のパラメータでatomを生成するような場合や、サーバー上でjotaiを動かす場合には注意が必要です。`atomFamily`にはタイムスタンプベースで古いatomを自動的に削除できる機能も用意されていますが、これで十分な場合は少なく、場合によっては自前で不要なatomをMapから削除する仕組みを実装する必要があります。
+
+## まとめ
+
+この章では、Suspenseとjotaiの組み合わせ方を説明しました。ポイントは、atomの値としてPromiseを保持することで、サスペンドするコンポーネントの外にPromiseを持つという要件を満たすことです。
+
+「ステート管理ライブラリの中にPromiseを保持する」という発想は従来のReactではあまり出てきません。従来式のやり方は、非同期処理の結果が出たらそれをステートに保存するというものでした。Suspenseの登場により考え方が変わり、Promiseそのものを保持し、ステートとして扱う発想が出てきました。
+
+jotaiはPromiseそのものを保持するという発想にとてもマッチした造りになっています。それが本書でステート管理ライブラリとしてjotaiを採用した理由の一つでもあります。
+
+次章からは、Suspense + jotaiの応用的な使い方を紹介していきます。
+
+## 練習問題
+
+派生atomを使ったパラメータ付き非同期処理の練習として、商品検索機能を実装してみましょう。
+
+以下の非同期関数が用意されています。
+
+```ts
+type Product = { id: string; name: string; price: number };
+
+async function searchProducts(keyword: string): Promise<Product[]> {
+  // 実際にはAPIを呼び出して商品を検索する
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return [
+    { id: "1", name: `${keyword}に関連する商品1`, price: 1000 },
+    { id: "2", name: `${keyword}に関連する商品2`, price: 2000 },
+  ];
+}
+```
+
+検索キーワードを保持するatomと、そのキーワードに基づいて商品を検索する派生atomを作成してください。検索キーワードが空文字列の場合は検索を行わず、空配列を返すようにしてください。
+
+```tsx
+// 検索キーワードを保持するatom
+const searchKeywordAtom = ???
+
+// 検索結果を取得する派生atom
+const searchResultsAtom = ???
+
+// 使用例
+const SearchResults: React.FC = () => {
+  const results = useAtomValue(searchResultsAtom);
+
+  return (
+    <ul>
+      {results.map((product) => (
+        <li key={product.id}>
+          {product.name} - ¥{product.price}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const SearchBox: React.FC = () => {
+  const setKeyword = useSetAtom(searchKeywordAtom);
+
+  const searchAction = (formData: FormData) => {
+    const keyword = formData.get("keyword") as string;
+    setKeyword(keyword);
+  };
+
+  return (
+    <form action={searchAction}>
+      <input name="keyword" />
+      <button type="submit">検索</button>
+    </form>
+  );
+};
+```
+
+:::details 答え
+
+```ts
+// 検索キーワードを保持するatom
+const searchKeywordAtom = atom("");
+
+// 検索結果を取得する派生atom
+const searchResultsAtom = atom(async (get): Promise<Product[]> => {
+  const keyword = get(searchKeywordAtom);
+  // キーワードが空の場合は検索しない
+  if (keyword === "") {
+    return [];
+  }
+
+  const products = await searchProducts(keyword);
+  return products;
+});
+```
+
+ポイントは、`searchResultsAtom`が`searchKeywordAtom`に依存していることです。
+
+`searchKeywordAtom`の値が変わると、それに依存している`searchResultsAtom`が自動的に再計算されます。つまり、`setKeyword`で検索キーワードを設定すると、自動的に新しい検索が実行されるわけです。
+
+また、キーワードが空文字列の場合は早期リターンで空配列を返しています。この場合は`searchProducts`を呼び出さないため、不要なAPI呼び出しを防ぐことができます。
+
+このパターンは、本文中の`userIdAtom`と`userAtom`の例と同じ構造です。「パラメータを保持するatom」と「そのパラメータに基づいて計算・取得する派生atom」という組み合わせは、jotai + Suspenseでよく使われるパターンなので覚えておきましょう。
+
+:::
