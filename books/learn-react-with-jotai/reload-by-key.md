@@ -139,12 +139,32 @@ UIバージョニングの概念はReactの思想とも絡んでいるため、�
 以下のような`createReloadableAtom`関数を実装してください。この関数は読み取り専用派生atomを作るときの`atom`と同様に振る舞い、派生atomを作って返します。さらに、その派生atomを再読み込みできる手段を提供します。
 
 ```tsx
-import { atom, type Getter, type WritableAtom } from "jotai";
+import { atom, type Getter } from "jotai";
 
 function createReloadableAtom<T>(
   getter: (get: Getter) => T
 ) {
   ???
+}
+```
+
+:::details 答え
+
+```tsx
+function createReloadableAtom<T>(
+  getter: (get: Getter) => T
+) {
+  const refetchKeyAtom = atom(0);
+
+  return atom(
+    (get) => {
+      get(refetchKeyAtom);
+      return getter(get);
+    },
+    (get, set) => {
+      set(refetchKeyAtom, (key) => key + 1);
+    }
+  );
 }
 
 // 使用例
@@ -166,26 +186,6 @@ const UserProfile: React.FC = () => {
     </section>
   );
 };
-```
-
-:::details 答え
-
-```tsx
-function createReloadableAtom<T>(
-  getter: (get: Getter) => T
-) {
-  const refetchKeyAtom = atom(0);
-
-  return atom(
-    (get) => {
-      get(refetchKeyAtom);
-      return getter(get);
-    },
-    (get, set) => {
-      set(refetchKeyAtom, (key) => key + 1);
-    }
-  );
-}
 ```
 
 ポイントは、読み書き両用のatomを返していることです。`atom`関数に2つの引数を渡すことで、読み取り関数と書き込み関数の両方を持つatomを作成できます。
