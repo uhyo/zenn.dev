@@ -7,3 +7,5 @@ price: 0 # 有料の場合200〜5000
 chapters:
   - introduction
   - jotai-basics
+  - suspense-basics
+  - suspense-plus-jotai
