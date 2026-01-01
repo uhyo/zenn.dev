@@ -9,3 +9,4 @@ chapters:
   - jotai-basics
   - suspense-basics
   - suspense-plus-jotai
+  - reload-by-key
