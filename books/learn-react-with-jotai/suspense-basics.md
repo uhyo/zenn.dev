@@ -201,3 +201,90 @@ Suspenseの基本的な動作は以上で分かりましたが、ここでひと
 この章では、Suspenseの基本的な挙動を解説しました。特に、サスペンドするコンポーネントがそのためのデータを自身のステート内に持つことはできないというのは重要な点です。
 
 次章では、Suspenseとjotaiの組み合わせについて解説します。
+
+## 練習問題
+
+Suspense境界の練習として、ネストしたSuspense境界を実装してみましょう。
+
+以下のような状況を考えます。ユーザーのプロフィールページがあり、ユーザー情報と、そのユーザーの投稿一覧を表示します。ユーザー情報と投稿一覧は別々のPromiseで取得されます。
+
+```tsx
+type User = { name: string };
+type Post = { id: number; title: string };
+
+async function fetchUser(): Promise<User> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return { name: "田中太郎" };
+}
+
+async function fetchPosts(): Promise<Post[]> {
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  return [
+    { id: 1, title: "はじめての投稿" },
+    { id: 2, title: "Reactを学んでいます" },
+    { id: 3, title: "Suspenseが面白い" },
+  ];
+}
+```
+
+投稿一覧の取得（`fetchPosts`）はユーザー情報の取得（`fetchUser`）よりも時間がかかります。そのため、ユーザー情報が先に表示され、投稿一覧は「Loading posts...」という表示で待機中であることを示したいです。
+
+以下のコードの`???`部分を埋めて、この要件を満たすコードを完成させてください。
+
+```tsx
+const UserProfilePage: React.FC = () => {
+  const userPromise = useMemo(() => fetchUser(), []);
+  const postsPromise = useMemo(() => fetchPosts(), []);
+
+  return (
+    ??? // Suspense境界をどう配置する？
+  );
+};
+
+const UserInfo: React.FC<{ userPromise: Promise<User> }> = ({ userPromise }) => {
+  const user = use(userPromise);
+  return <h1>{user.name}さんのプロフィール</h1>;
+};
+
+const PostList: React.FC<{ postsPromise: Promise<Post[]> }> = ({ postsPromise }) => {
+  const posts = use(postsPromise);
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>{post.title}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+:::details 答え
+
+```tsx
+const UserProfilePage: React.FC = () => {
+  const userPromise = useMemo(() => fetchUser(), []);
+  const postsPromise = useMemo(() => fetchPosts(), []);
+
+  return (
+    <Suspense fallback={<p>Loading user...</p>}>
+      <UserInfo userPromise={userPromise} />
+      <h2>投稿一覧</h2>
+      <Suspense fallback={<p>Loading posts...</p>}>
+        <PostList postsPromise={postsPromise} />
+      </Suspense>
+    </Suspense>
+  );
+};
+```
+
+ポイントは、Suspenseを**ネスト**させていることです。
+
+外側のSuspenseは`UserInfo`のサスペンドをキャッチします。ユーザー情報が読み込まれるまでは、ページ全体が「Loading user...」と表示されます。
+
+内側のSuspenseは`PostList`のサスペンドをキャッチします。ユーザー情報が読み込まれた後も投稿一覧がまだ読み込み中の場合、`UserInfo`と「投稿一覧」という見出しは表示されつつ、`PostList`の部分だけが「Loading posts...」と表示されます。
+
+もし内側のSuspenseがなかったらどうなるでしょうか。その場合、`PostList`のサスペンドも外側のSuspenseにキャッチされてしまいます。投稿一覧の読み込みが完了するまでページ全体が「Loading user...」のままになってしまい、ユーザー体験が悪化します。
+
+このように、Suspense境界を適切にネストさせることで、読み込みが早く完了した部分から順番に表示することができます。
+
+:::
