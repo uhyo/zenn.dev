@@ -1,7 +1,7 @@
 title: "jotaiによるReact再入門"
 summary: "Reactでの、Suspense以後の設計に不慣れな方に向けて、Suspenseの活用法をjotaiを通じて解説します。"
 topics: ["react", "jotai"]
-published: false
+published: true
 price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
