@@ -11,4 +11,6 @@ chapters:
   - suspense-plus-jotai
   - reload-by-key
   - transition-basics
+  - transition-split-world
   - transition-optout
+  - jotai-eager
