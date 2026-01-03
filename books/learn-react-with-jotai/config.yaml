@@ -14,3 +14,4 @@ chapters:
   - transition-split-world
   - transition-optout
   - jotai-eager
+  - error-handling
