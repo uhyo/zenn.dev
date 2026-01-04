@@ -138,7 +138,7 @@ const UserProfile: React.FC<{ userId: string; isPending: boolean }> = ({ userId,
 
 `useTransition`フックは2つの値を返します。1つ目はトランジションが進行中かどうかを示す`isPending`ブール値、2つ目はトランジションを開始するための`startTransition`関数です。
 
-`startTransition`関数は、先ほどの、Reactから直接インポートして使う`startTransition`関数と同じ使い方ができます。それに加えて`isPending`が得られるのが``useTransition`フックの特徴です。
+`startTransition`関数は、先ほどの、Reactから直接インポートして使う`startTransition`関数と同じ使い方ができます。それに加えて`isPending`が得られるのが`useTransition`フックの特徴です。
 
 この`isPending`は通常は`false`ですが、トランジションによるステート更新が進行中でサスペンドが発生している間は`true`になります。これを使って、`UserProfile`コンポーネント内で「(読み込み中...)」のようなフィードバックを表示しています。
 

@@ -23,7 +23,7 @@ const [isLoading, setIsLoading] = useState(false);
 
 このような「読み込み中状態の管理」はReactがやってくれるので、アプリケーション上でステートを管理する必要はもうありません。
 
-また、他のSuspenseの特徴として**Promiseとの統合**も挙げられます。PromiseはJavascriptの非同期処理に出てくるオブジェクトですが、Suspense以後のReactは、Promiseの処理をReactに任せることができます。React 19以降だれば`use` APIを使って`use(promise)`でPromiseの中身を取り出すという魔法のようなAPIを使えます。
+また、他のSuspenseの特徴として**Promiseとの統合**も挙げられます。PromiseはJavascriptの非同期処理に出てくるオブジェクトですが、Suspense以後のReactは、Promiseの処理をReactに任せることができます。React 19以降であれば`use` APIを使って`use(promise)`でPromiseの中身を取り出すという魔法のようなAPIを使えます。
 
 ```tsx
 const UserProfile: React.FC<{ userPromise: Promise<User> }> = ({ userPromise }) => {
@@ -90,7 +90,7 @@ const UserProfile: React.FC<{ userPromise: Promise<User> }> = ({ userPromise }) 
 };
 ```
 
-この例では、`App`がユーザーのデータ取得を担当し、`UserProfile`がユーザーデータの表示を担当しています。おkの例がどのように動作するか説明します。
+この例では、`App`がユーザーのデータ取得を担当し、`UserProfile`がユーザーデータの表示を担当しています。この例がどのように動作するか説明します。
 
 まず、`UserProfile`は初回レンダリング時にPromiseに対して`use`を呼び出します。このとき、`UserProfile`は**サスペンド**します。
 
