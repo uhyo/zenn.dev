@@ -230,11 +230,12 @@ const App: React.FC = () => {
         });
       }}>タブB {activeTab === "B" ? "(選択中)" : ""}</button>
 
-      {activeTab === "A" ? (
+      {activeTab === "A" && (
         <Suspense fallback={<LoadingSpinner />}>
           <TabAContent />
         </Suspense>
-      ) : (
+      )}
+      {activeTab === "B" && (
         <Suspense fallback={<LoadingSpinner />}>
           <TabBContent />
         </Suspense>
@@ -244,7 +245,7 @@ const App: React.FC = () => {
 };
 ```
 
-先ほどとの違いは、`Suspense`を条件付きレンダリングしている点です。こうすると、タブAの`Suspense`とタブBの`Suspense`は**別々のインスタンス**になります。
+先ほどとの違いは、`Suspense`を2つに分けて、それぞれを条件付きレンダリングしている点です。こうすると、タブAの`Suspense`とタブBの`Suspense`は**別々のインスタンス**になります。
 
 そのため、タブを切り替えたときは**既存の`Suspense`が片付けられ、新しい`Suspense`が出現と同時にサスペンドする**ことになります。
 
