@@ -9,6 +9,7 @@ chapters:
   - jotai-basics
   - suspense-basics
   - suspense-plus-jotai
+  - abort-signal
   - reload-by-key
   - transition-basics
   - transition-split-world

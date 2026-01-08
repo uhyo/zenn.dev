@@ -61,6 +61,13 @@ const UserProfile: React.FC = () => {
 1つ目の方法は、同時に1つのパラメータでしか非同期処理を行わない場合に使えます。この場合は、パラメータを保持するためのatomを別途用意し、そのatomに依存する派生atomを作成します。
 
 ```tsx
+// fetchUserもパラメータ付きに変更
+async function fetchUser(userId: string): Promise<User> {
+  // 実際にはfetchとかでデータを取得してくる
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return { name: `ユーザー${userId}` };
+}
+
 // 取得すべきユーザーIDを保持する
 const userIdAtom = atom<string | null>(null);
 
