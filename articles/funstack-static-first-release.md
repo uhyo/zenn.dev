@@ -1,12 +1,12 @@
 ---
-title: "サーバーの無いReactフレークワークFUNSTACK Static"
+title: "サーバーの無いReactフレームワークFUNSTACK Static"
 emoji: "🏔️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["react"]
 published: true
 ---
 
-皆さんこんにちは。この記事では、筆者が最近開発した新しいReactフレークワークである**FUNSTACK Static**について紹介します。
+皆さんこんにちは。この記事では、筆者が最近開発した新しいReactフレームワークである**FUNSTACK Static**について紹介します。
 
 https://github.com/uhyo/funstack-static
 
