@@ -333,7 +333,7 @@ export default function App() {
 実は、`defer`の型はこうなっています。
 
 ```ts
-function defer(Component: React.FC<{}>): React.ReactNode;
+function defer(element: React.ReactElement): React.ReactNode;
 ```
 
 上記のコードに`defer`を適用すると、こうなります。
@@ -347,14 +347,14 @@ import { AboutPage } from './AboutPage';
 export default function App() {
   return (
     <Router
-      homeContents={defer(HomePage)}
-      aboutContents={defer(AboutPage)}
+      homeContents={defer(<HomePage />)}
+      aboutContents={defer(<AboutPage />)}
     />
   );
 }
 ```
 
-つまり、`<HomePage />`のように要素をレンダリングする代わりに`defer(HomePage)`とできるわけです。
+つまり、`<HomePage />`のように要素をレンダリングする代わりに`defer(<HomePage />)`とできるわけです。
 
 `defer`を使った場合、**`defer`によりレンダリングされたサーバーコンポーネントは別々のRSCペイロードとして分離される**という効果があります。先ほど見せたビルド出力ファイルの一覧で`fun:rsc-payload`以下に複数のtxtファイルがあるのは、この`defer`による分割の結果です。
 
