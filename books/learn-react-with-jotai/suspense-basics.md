@@ -28,7 +28,7 @@ const [isLoading, setIsLoading] = useState(false);
 ```tsx
 const UserProfile: React.FC<{ userPromise: Promise<User> }> = ({ userPromise }) => {
   // useでPromiseの中身を取り出す
-  const user: User = use(userProfile);
+  const user: User = use(userPromise);
 
   return <section>
     <h1>{user.name}のプロフィール</h1>
