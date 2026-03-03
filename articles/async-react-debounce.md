@@ -28,7 +28,7 @@ published: true
 
 https://speakerdeck.com/uhyo/react-19shi-dai-nokonponentoshe-ji-besutopurakuteisu
 
-もしあなたがReactを使っていて、「具体的なこと」や「最適化」を自分で書かなければいけなかったしましょう。その場合、極論、その理由は以下のどちらかです。
+もしあなたがReactを使っていて、「具体的なこと」や「最適化」を自分で書かなければいけないとしましょう。その場合、極論、その理由は以下のどちらかです。
 
 - あなたが宣言的UIを十分に実践できていない。
 - React本体の機能やエコシステムがまだ未熟で、宣言的UIを実践するための土台が不足している。
@@ -253,7 +253,7 @@ const Highlighted: React.FC<{ text: string; filter: string }> = ({
 };
 ```
 
-`highlight`関数を呼び出すという仕事が、`FilteredList`の中で全部やるのではなく`Highlighted`コンポーネントに切り出しました。これにより、8500個のハイライト作業の途中でもトランジションを中断できるようになり、反応性がさらに向上します。
+`highlight`関数を呼び出すという仕事を、`FilteredList`の中で全部やるのではなく`Highlighted`コンポーネントに切り出しました。これにより、8500個のハイライト作業の途中でもトランジションを中断できるようになり、反応性がさらに向上します。
 
 さらに改善するならば、`FilteredList`の中で数千個の`Highlighted`子コンポーネントのJSX Elementを全部一気に作るのは重いので、このようにチャンクごとのコンポーネントに分割するのもいいでしょう。
 
