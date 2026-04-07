@@ -1,5 +1,5 @@
 ---
-title: "共有スキルをどう管理するか――AIスキル設計の理想と現実"
+title: "共有スキルを2分類で管理する――AIスキル設計の理想と現実"
 emoji: "😺"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["claudecode"]
