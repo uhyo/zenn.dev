@@ -3,7 +3,7 @@ title: "Claude Opus 4.7のReact習熟度をeffort=maxで測る、ついでにOpu
 emoji: "🔬"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["react", "claudecode"]
-published: false
+published: true
 ---
 
 React習熟度シリーズ5回目です。前回の記事ではClaude Opus 4.7のReact習熟度を測り、これまでの首位だったGPT-5.4を抜いてベンチマーク首位に立ったことを示しました。
