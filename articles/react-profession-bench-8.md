@@ -10,6 +10,8 @@ published: true
 
 ということで、今回はClaude Fable 5のReact習熟度を、いつものベンチマークで測ってみました。
 
+前回の記事はこちらです。
+
 https://zenn.dev/uhyo/articles/react-profession-bench-7
 
 ## 結果
