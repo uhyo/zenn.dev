@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-7
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-9
+
 ## 結果
 
 結論としては、**Opus 4.8 (effort=high) < Fable 5 (effort=high) < Opus 4.8 (effort=max)** という位置づけになりました。

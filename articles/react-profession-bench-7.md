@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-6
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-8
+
 ## 結果
 
 ベンチマークは13の課題（スペック）ごとにOpusに実装させ、それを評価者モデル（Claude Sonnet 4.6）が採点する形式で行っています。以下はスペックごとのスコアです。3回実行して平均を取っています。 **\*** の意味は記事後半の生レポートを参照してください。

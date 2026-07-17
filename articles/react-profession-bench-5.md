@@ -18,6 +18,10 @@ https://zenn.dev/uhyo/articles/react-profession-bench-3
 
 https://zenn.dev/uhyo/articles/react-profession-bench-4
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-6
+
 今回は新たに以下の2点を検証しました。
 
 1. **Opus 4.7をeffort=maxで実行する**: Opusにはeffortを指定できる機能があり、これまでは`high`で検証していました。最上位の`max`にすることでReact習熟度が向上するのか検証しました。

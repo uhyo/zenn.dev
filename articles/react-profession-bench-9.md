@@ -16,6 +16,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-8
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-10
+
 ## 結果
 
 結果として、**Sonnet 5はOpus 4.8とほぼ同水準のスコアを出しました**。Sonnet 5の平均スコアは**78.21**、Opus 4.8 defaultの平均スコアは**79.38**で、差はわずか-1.17です。実験を担当したClaudeによれば、この差は誤差の範囲内である可能性があります。

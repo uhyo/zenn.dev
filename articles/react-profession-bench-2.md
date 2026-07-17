@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-1
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-3
+
 ## 結果
 
 | スペック | Sonnet | Opus | Haiku | GPT-4.1 | GPT-5.4 |

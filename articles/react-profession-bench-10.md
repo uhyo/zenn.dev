@@ -14,6 +14,10 @@ https://zenn.dev/uhyo/articles/react-profession-bench-8
 
 https://zenn.dev/uhyo/articles/react-profession-bench-9
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-11
+
 ## 結果
 
 結果としては、Fable 5をeffort=maxで回したスコアはもちろん歴代1位で、**86.67**を記録しました。Opus 4.8とFable 5のそれぞれ、effort=high/maxのスコアが出揃ったので、表で見てみます。

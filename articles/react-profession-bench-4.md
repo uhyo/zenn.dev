@@ -16,6 +16,10 @@ https://zenn.dev/uhyo/articles/react-profession-bench-2
 
 https://zenn.dev/uhyo/articles/react-profession-bench-3
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-5
+
 ベンチマークの設定は前回までと同じ、13スペック・評価者はClaude Sonnet 4.6です。今回は新登場のOpus 4.7を追加で測定し、既存のOpus 4.6のスコアと比較します。
 
 ちなみに、Opusはeffortを設定できるのですが、Opus 4.6とOpus 4.7のどちらもhighで評価しています。また、Opus 4.6は劣化が著しいと噂されています。Opus 4.6のベンチマークを行ったのが2026年3月19日なので、その時点のOpus 4.6のスコアを今回のOpus 4.7と比較する形になります。

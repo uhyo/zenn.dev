@@ -12,6 +12,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-10
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-12
+
 ## 結果
 
 今回はGPT-5.6の3種類のモデル、Sol, Terra, Lunaのそれぞれのスコアを計測しました。Effortはすべてhighに統一しています。

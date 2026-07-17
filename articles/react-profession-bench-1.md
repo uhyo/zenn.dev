@@ -12,6 +12,10 @@ published: true
 
 そこで、今回は、Claude CodeのReact習熟度を測るための簡単なベンチマークを作ってみたので、その結果を共有します。
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-2
+
 ## 注意と予防線
 
 ベンチマークと名乗ると、粗探しをしたい方々が寄ってくる傾向があります。その前に、今回の設定が以下のとおりであることをご理解ください。

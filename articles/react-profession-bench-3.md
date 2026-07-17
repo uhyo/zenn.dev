@@ -14,6 +14,10 @@ https://zenn.dev/uhyo/articles/react-profession-bench-1
 
 https://zenn.dev/uhyo/articles/react-profession-bench-2
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-4
+
 ## 結果
 
 | スペック | Sonnet | Opus | Haiku | GPT-5.4 |

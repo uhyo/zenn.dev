@@ -24,6 +24,10 @@ https://zenn.dev/uhyo/articles/react-profession-bench-4
 
 https://zenn.dev/uhyo/articles/react-profession-bench-5
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-7
+
 ## 結果
 
 今回は、Opus 4.7と揃えるためにeffort=highでの比較となっています。Opus 4.8ではeffortの重要度が増したとされており、コーディングエージェント用途でxhigh以上が推奨されているので、xhighで走らせるともしかしたらもう少しスコアが向上するかもしれません。そこは未検証です。
