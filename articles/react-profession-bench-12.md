@@ -12,6 +12,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-11
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-13
+
 ## 結果
 
 まず、GPT-5.6の各モデルのスコアを発表します。effort=highとmaxの差も併せて示します。
