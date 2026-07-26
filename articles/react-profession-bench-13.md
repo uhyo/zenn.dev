@@ -16,6 +16,10 @@ Fable 5はClaudeの最先端モデルで、本ベンチマークでの最上位�
 
 https://zenn.dev/uhyo/articles/react-profession-bench-12
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-14
+
 ## 結果
 
 まず、スペックごとの得点表です。Fableの3種類のeffortを比較しています。
