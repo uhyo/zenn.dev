@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-13
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-15
+
 ## 結果
 
 さっそく、Opus 5の結果を、他のモデルと並べた順位表の形で見てみましょう。
