@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-15
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-17
+
 ## 結果
 
 順位表をClaude系統とGPT系統を分けて表示します。
