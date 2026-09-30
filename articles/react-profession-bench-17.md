@@ -2,7 +2,7 @@
 title: "王の凱旋—Opus 5.5 React習熟度ベンチマーク—"
 emoji: "👑"
 type: "idea" # tech: 技術記事 / idea: アイデア
-topics: ["react", "codex"]
+topics: ["react", "claudecode"]
 published: true
 ---
 
@@ -13,6 +13,10 @@ published: true
 前回の記事はこちらです。
 
 https://zenn.dev/uhyo/articles/react-profession-bench-16
+
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-18
 
 ## 結果
 
