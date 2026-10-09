@@ -14,6 +14,10 @@ published: true
 
 https://zenn.dev/uhyo/articles/react-profession-bench-17
 
+次回の記事はこちらです。
+
+https://zenn.dev/uhyo/articles/react-profession-bench-19
+
 ## 結果
 
 こちらが総合スコアの順位表です。
