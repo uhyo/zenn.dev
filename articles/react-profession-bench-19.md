@@ -44,8 +44,8 @@ https://zenn.dev/uhyo/articles/react-profession-bench-18
 | 24 | | GPT-5.6 Terra high | 73.44 |
 | 25 | | GPT-5.4 | 71.50 |
 | 26 | | **GPT-6 Luna high** | **71.18** |
-| 27 | | Opus 4.6 high | 70.20 |
-| 28 | | Sonnet 4.6 | 66.50 |
+| 27 | Opus 4.6 high | | 70.20 |
+| 28 | Sonnet 4.6 | | 66.50 |
 
 GPT-6.1 SolがGPT-6 Astraを若干上回る結果となりましたが、差は小さく、同等レベルと見なせます。これらのモデルのReact習熟度はFable 5と同程度と見なせますが、その上にはSonnet 5.5やOpus 5.5が陣取っています。
 
